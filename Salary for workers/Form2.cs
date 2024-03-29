@@ -46,7 +46,7 @@ namespace Salary_for_workers
             foreach (var worrker in _workers)
             {
                 string query = "SELECT Date, day, night FROM authorization.timework cross join People " +
-                    "where (name = '@name' and surname = '@surname' and Patronymic = '@Patronymic' EmploymentDate = '@EmploymentDate')";
+                    "where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate)";
 
                 try
                 {
@@ -144,14 +144,16 @@ namespace Salary_for_workers
             }
         }
 
-        private void comboBoxPeoples_TextChanged(object sender, EventArgs e)
+        private async void comboBoxPeoples_TextChanged(object sender, EventArgs e)
         {
             GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            _workers = await TryGetDataAsync();
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        private async void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            _workers = await TryGetDataAsync();
         }
     }
 }

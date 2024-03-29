@@ -127,7 +127,7 @@ namespace Salary_for_workers
         private async Task<int> GetIdPositionsAsync(string login, string password)
         {
             int id = -1;
-            string query = $"SELECT people.idPositions FROM authorization.department CROSS JOIN people CROSS JOIN passwords WHERE (login = '@login' AND password = '@password')";
+            string query = $"SELECT people.idPositions FROM authorization.department CROSS JOIN people CROSS JOIN passwords WHERE (login = @login AND password = @password) limit 1;";
             try
             {
                 using (MySqlCommand command = new MySqlCommand(query, mCon))
@@ -137,12 +137,15 @@ namespace Salary_for_workers
 
                     await mCon.OpenAsync();
 
-                    object resul = command.ExecuteScalar();
-
-                    if (resul != null)
+                    await Task.Run(() =>
                     {
-                        id = Convert.ToInt32(resul);
-                    }
+                        object resul = command.ExecuteScalar();
+
+                        if (resul != null)
+                        {
+                            id = Convert.ToInt32(resul);
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -157,7 +160,7 @@ namespace Salary_for_workers
         private async Task<List<Worker>> GetWorkersAsync(int idPosition)
         {
             List<Worker> workers = new List<Worker>();
-            string query = $"SELECT name, surname, Patronymic, EmploymentDate FROM authorization.people where idPositions = '@idPositions';";
+            string query = $"SELECT name, surname, Patronymic, EmploymentDate FROM authorization.people where idPositions = @idPositions;";
 
             try
             {
