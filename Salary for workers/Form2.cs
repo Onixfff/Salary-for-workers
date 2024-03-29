@@ -113,10 +113,18 @@ namespace Salary_for_workers
                     {
                         textBoxDay.Text = day.ToString();
                     }
+                    else
+                    {
+                        textBoxDay.Text = "";
+                    }
 
                     if(night != -1)
                     {
                         textBoxNight.Text = night.ToString();
+                    }
+                    else
+                    {
+                        textBoxNight.Text = "";
                     }
                 }
             }

@@ -40,17 +40,41 @@ namespace Salary_for_workers
                         if(decryptedPassword == textBoxPassword.Text)
                         {
                             int id = await GetIdPositionsAsync(textBoxLogin.Text, encryptedPassword);
-                            List<Worker> workers = await GetWorkersAsync(id);
-
-                            Form2 form2 = new Form2(workers);
-                            form2.ShowDialog();
-                            this.Close();
+                            if (id != -1)
+                            {
+                                List<Worker> workers = await GetWorkersAsync(id, textBoxLogin.Text, encryptedPassword);
+                                if (workers.Count >0)
+                                {
+                                    Form2 form2 = new Form2(workers);
+                                    this.Visible = false;
+                                    form2.ShowDialog();
+                                    this.Visible = true;
+                                }
+                                else
+                                {
+                                    throw new DllNotFoundException();
+                                }
+                            }
+                            else
+                            {
+                                throw new InRowChangingEventException();
+                            }
                         }
                         else
                         {
                             MessageBox.Show("Пароли не совпадают");
                         }
                     }
+                }
+                catch (InRowChangingEventException)
+                {
+                    MessageBox.Show("Ошибка входа #44515");
+                    Console.WriteLine("Нету idPosition");
+                }
+                catch (DllNotFoundException)
+                {
+                    MessageBox.Show("Ошибка входа #44520");
+                    Console.WriteLine("Под вашим пользователем нету подчиненных");
                 }
                 catch (AggregateException)
                 {
@@ -157,16 +181,20 @@ namespace Salary_for_workers
             return id;
         }
 
-        private async Task<List<Worker>> GetWorkersAsync(int idPosition)
+        private async Task<List<Worker>> GetWorkersAsync(int idPosition, string login, string password)
         {
             List<Worker> workers = new List<Worker>();
-            string query = $"SELECT name, surname, Patronymic, EmploymentDate FROM authorization.people where idPositions = @idPositions;";
+            string query = "SELECT people.* FROM people JOIN passwords ON people.idPassword = passwords.id JOIN positions ON people.idPositions = positions.id WHERE passwords.login != @login AND passwords.password = @password AND positions.id != @idPositions;";
+            //sql для выбора даже себя
+            //string query = $"SELECT name, surname, Patronymic, EmploymentDate FROM authorization.people where idPositions = @idPositions;";
 
             try
             {
                 using (MySqlCommand command = new MySqlCommand(query, mCon))
                 {
                     command.Parameters.AddWithValue($"@idPositions", idPosition);
+                    command.Parameters.AddWithValue($"@password", password);
+                    command.Parameters.AddWithValue($"@login", login);
 
                     await mCon.OpenAsync();
 
