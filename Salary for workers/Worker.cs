@@ -10,6 +10,7 @@ namespace Salary_for_workers
 {
     public class Worker
     {
+        public readonly int Id;
         public readonly string Name;
         public readonly string Surname;
         public readonly string Patronymic;
@@ -18,8 +19,9 @@ namespace Salary_for_workers
 
         public List<MounthWork> GetMounthWork() => mounthWork;
 
-        public Worker(string name, string surname, string patronymic, DateTime emplomentDate)
+        public Worker(int id, string name, string surname, string patronymic, DateTime emplomentDate)
         {
+            Id = id;
             Name = name;
             Surname = surname;
             Patronymic = patronymic;
@@ -130,8 +132,8 @@ namespace Salary_for_workers
     public class MounthWork
     {
         private DateTime _date;
-        private int _day;
-        private int _night;
+        private int _day = 0;
+        private int _night = 0;
 
         public MounthWork(DateTime date, int day, int night) 
         {

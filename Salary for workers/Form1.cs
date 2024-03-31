@@ -184,7 +184,7 @@ namespace Salary_for_workers
         private async Task<List<Worker>> GetWorkersAsync(int idPosition, string login, string password)
         {
             List<Worker> workers = new List<Worker>();
-            string query = "SELECT people.Name, people.Surname, people.Patronymic, people.EmploymentDate FROM people JOIN passwords ON people.idPassword = passwords.id JOIN positions ON people.idPositions = positions.id WHERE passwords.login != @login AND passwords.password != @password AND positions.id = @idPositions;";
+            string query = "SELECT people.Id, people.Name, people.Surname, people.Patronymic, people.EmploymentDate FROM people JOIN passwords ON people.idPassword = passwords.id JOIN positions ON people.idPositions = positions.id WHERE passwords.login != @login AND passwords.password != @password AND positions.id = @idPositions;";
             //sql для выбора даже себя
             //string query = $"SELECT name, surname, Patronymic, EmploymentDate FROM authorization.people where idPositions = @idPositions;";
 
@@ -202,7 +202,7 @@ namespace Salary_for_workers
                     {
                         while (await reader.ReadAsync())
                         {
-                            Worker worker = new Worker(reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetDateTime(3));
+                            Worker worker = new Worker(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4));
                             workers.Add(worker);
                         }
                     }
