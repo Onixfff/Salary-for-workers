@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -48,8 +49,8 @@ namespace Salary_for_workers
         {
             foreach (var worrker in _workers)
             {
-                string query = "SELECT Date, day, night FROM authorization.timework cross join People " +
-                    "where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate)";
+                string query = "SELECT timework.Id, Date, day, night FROM authorization.timework cross join People " +
+                    "where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate and idPeople =@idPeople)";
 
                 try
                 {
@@ -59,6 +60,7 @@ namespace Salary_for_workers
                         command.Parameters.AddWithValue($"@surname", worrker.Surname);
                         command.Parameters.AddWithValue($"@Patronymic", worrker.Patronymic);
                         command.Parameters.AddWithValue($"@EmploymentDate", worrker.EmploymentDate);
+                        command.Parameters.AddWithValue($"@idPeople", worrker.Id);
 
                         await mCon.OpenAsync();
 
@@ -66,7 +68,7 @@ namespace Salary_for_workers
                         {
                             while (await reader.ReadAsync())
                             {
-                                worrker.AddDayWork(reader.GetDateTime(0), reader.GetInt32(1), reader.GetInt32(2));
+                                worrker.AddDayWork(reader.GetInt32(0), reader.GetDateTime(1), reader.GetInt32(2), reader.GetInt32(3));
                             }
                         }
                     }
@@ -157,14 +159,14 @@ namespace Salary_for_workers
 
         private async void comboBoxPeoples_TextChanged(object sender, EventArgs e)
         {
-            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
             _workers = await TryGetDataAsync();
+            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
         }
 
         private async void dateTimePicker1_ValueChangedAsync(object sender, EventArgs e)
         {
-            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
             _workers = await TryGetDataAsync();
+            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
         }
 
         private Worker GetThisWorker()
@@ -190,23 +192,70 @@ namespace Salary_for_workers
             return returnWorker;
         }
 
-        private async Task UpdateDataAsync(int day, int night, DateTime date, int id)
+        private async Task UpdateDataAsync(int day, int night, int id , int idDay)
         {
+            string query = $"UPDATE `authorization`.`timework` SET `Day` = '{day}', `Night` = '{night}', `idPeople` = '{id}' WHERE (`Id` = '{idDay}');";
 
+            try
+            {
+                await mCon.OpenAsync();
+
+                using (MySqlCommand command = new MySqlCommand(query, mCon))
+                {
+                    await command.ExecuteNonQueryAsync();
+                    MessageBox.Show("Данные изменены");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { mCon.Close(); }
         }
 
         private async Task InsertDataAsync(int day, int night, DateTime date, int id)
         {
             MySqlDateTime mySqlDateTime = new MySqlDateTime(date.Date);
 
-            string query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`) VALUES ('{mySqlDateTime}', '{day}', '{night}', '{id}');";
+            var dateMysql =  mySqlDateTime.GetDateTime().Date.ToString("yyyy-MM-dd");
 
+            string query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`) VALUES ('{dateMysql}', '{day}', '{night}', '{id}');";
+
+            try
+            {
+                await mCon.OpenAsync();
+                
+                using (MySqlCommand command = new MySqlCommand(query, mCon))
+                {
+
+                    await command.ExecuteNonQueryAsync();
+                    MessageBox.Show("Данные добавлены в базу данных");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { mCon.Close(); }
         }
 
         private async void buttonSubmit_Click(object sender, EventArgs e)
         {
             Worker worker = GetThisWorker();
-           
+
+            int dayInt, nightInt;
+
+            try
+            {
+                dayInt = Convert.ToInt32(textBoxDay.Text.Trim());
+                nightInt = Convert.ToInt32(textBoxNight.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Неправельно записаны данные в поля 'день/ночь'");
+                return;
+            }
+
             if(worker == null)
             {
                 MessageBox.Show("Не найден работник для добавления");
@@ -216,13 +265,29 @@ namespace Salary_for_workers
             int day = worker.GetDay(dateTimePicker1.Value);
             int night = worker.GetNight(dateTimePicker1.Value);
 
-            if(day == 0 && night == 0) 
+            if(dayInt == day && nightInt == night)
             {
-                await InsertDataAsync(Convert.ToInt32(textBoxDay.Text.Trim()), Convert.ToInt32(textBoxNight.Text.Trim()), dateTimePicker1.Value, worker.Id);
+                MessageBox.Show("Данные не изменились");
+                return;
+            }
+
+            if(day == -1 && night == -1) 
+            {
+                await InsertDataAsync(dayInt, nightInt, dateTimePicker1.Value, worker.Id);
             }
             else
             {
-                await UpdateDataAsync(Convert.ToInt32(textBoxDay.Text.Trim()), Convert.ToInt32(textBoxNight.Text.Trim()), dateTimePicker1.Value, worker.Id);
+                int idDay = worker.GetId(dateTimePicker1.Value);
+
+                if(idDay != -1)
+                {
+                    await UpdateDataAsync(dayInt, nightInt, worker.Id, idDay);
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось получить id дня");
+                    return;
+                }
             }
         }
     }

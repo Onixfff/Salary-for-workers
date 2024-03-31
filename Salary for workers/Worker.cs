@@ -29,9 +29,24 @@ namespace Salary_for_workers
             mounthWork = new List<MounthWork>();
         }
 
-        public void AddDayWork(DateTime date, int day, int night)
+        public void AddDayWork(int id, DateTime date, int day, int night)
         {
-            mounthWork.Add(new MounthWork(date, day, night));
+            mounthWork.Add(new MounthWork(id ,date, day, night));
+        }
+
+        public int GetId(DateTime date)
+        {
+            int id = -1;
+
+            foreach (var item in mounthWork)
+            {
+                if(item.GetDate() == date)
+                {
+                    id = item.GetId();
+                }
+            }
+
+            return id;
         }
 
         public int GetDay(DateTime date)
@@ -131,16 +146,20 @@ namespace Salary_for_workers
 
     public class MounthWork
     {
+        private int _id;
         private DateTime _date;
         private int _day = 0;
         private int _night = 0;
 
-        public MounthWork(DateTime date, int day, int night) 
+        public MounthWork(int id ,DateTime date, int day, int night) 
         {
+            _id = id;
             _date = date;
             _day = day;
             _night = night;
         }
+
+        public int GetId() { return _id; }
 
         public DateTime GetDate() { return _date; }
 
