@@ -199,7 +199,7 @@ namespace Salary_for_workers
         {
             MySqlDateTime mySqlDateTime = new MySqlDateTime(date.Date);
 
-            string query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`) VALUES ('{mySqlDateTime}', '{day}', '{night}', '{worker.Id}');";
+            string query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`) VALUES ('{mySqlDateTime}', '{day}', '{night}', '{id}');";
 
         }
 
