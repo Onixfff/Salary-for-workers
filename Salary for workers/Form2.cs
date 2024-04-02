@@ -58,6 +58,7 @@ namespace Salary_for_workers
             // Проходим по каждой строке
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
+                row.Selected = true;
                 // Проходим по каждой ячейке в строке
                 foreach (DataGridViewCell cell in row.Cells)
                 {
@@ -81,10 +82,11 @@ namespace Salary_for_workers
             dataTable.Columns.Add("Значение ночи", typeof(string));
             dataTable.Columns.Add("Ночь", typeof(int));
 
-            DataRow dataRow = dataTable.NewRow();
 
             foreach (var worker in _workers)
             {
+                DataRow dataRow = dataTable.NewRow();
+                
                 dataRow["id"] = worker.Id;
                 dataRow["Имя"] = worker.Name;
                 dataRow["Фамилия"] = worker.Surname;
@@ -93,10 +95,10 @@ namespace Salary_for_workers
                 dataRow["День"] = worker.GetDay(_datetime);
                 dataRow["Значение ночи"] = worker.GetNightAbbreviation(_datetime);
                 dataRow["Ночь"] = worker.GetNight(_datetime);
+                
+                dataTable.Rows.Add(dataRow);
             }
-
-            dataTable.Rows.Add(dataRow);
-
+            
             dataSet.Tables.Add(dataTable);
 
             return dataSet;
@@ -164,10 +166,10 @@ namespace Salary_for_workers
             foreach (var worker in _workers)
             {
                 comboBoxPeoples.Items.Add(worker.Name + " " + worker.Surname + " " + worker.Patronymic);
-                comboBoxPeoples.Items.Add("Выбранные");
-                comboBoxPeoples.Items.Add("Все");
             }
 
+            comboBoxPeoples.Items.Add("Выбранные");
+            comboBoxPeoples.Items.Add("Все");
             comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
         }
 
@@ -444,5 +446,6 @@ namespace Salary_for_workers
             else
                 IdDay = -1;
         }
+
     }
 }
