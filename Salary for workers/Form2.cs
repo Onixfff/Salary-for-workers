@@ -50,6 +50,21 @@ namespace Salary_for_workers
             toolTip1.SetToolTip(buttonSubmit, "");
             dataGridView1.DataSource = UpdateDataGridView();
             dataGridView1.Refresh();
+            DataGridViewFullSelected();
+        }
+
+        private void DataGridViewFullSelected()
+        {
+            // Проходим по каждой строке
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Проходим по каждой ячейке в строке
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    // Выделяем ячейку
+                    cell.Selected = true;
+                }
+            }
         }
 
         private DataSet UpdateDataGridView()
