@@ -29,9 +29,9 @@ namespace Salary_for_workers
             mounthWork = new List<MounthWork>();
         }
 
-        public void AddDayWork(int id, DateTime date, int day, int night)
+        public void AddDayWork(int id, DateTime date, int idDay, int day,string dayName, int idNight, int night, string nightName)
         {
-            mounthWork.Add(new MounthWork(id ,date, day, night));
+            mounthWork.Add(new MounthWork(id ,date, idDay, day, dayName, idNight, night, nightName));
         }
 
         public int GetId(DateTime date)
@@ -49,6 +49,21 @@ namespace Salary_for_workers
             return id;
         }
 
+        public int GetDayId(DateTime date)
+        {
+            int dayId = -1;
+
+            foreach (MounthWork item in mounthWork)
+            {
+                if(item.GetDate() == date)
+                {
+                    dayId = item.GetDayId();
+                }
+            }
+
+            return dayId;
+        }
+
         public int GetDay(DateTime date)
         {
             int day = -1;
@@ -64,6 +79,36 @@ namespace Salary_for_workers
             return day;
         }
 
+        public string GetDayAbbreviation(DateTime date)
+        {
+            string dayAbbreviation = "-1";
+
+            foreach (MounthWork item in mounthWork)
+            {
+                if (item.GetDate() == date)
+                {
+                    dayAbbreviation = item.GetDayAbbreviation();
+                }
+            }
+
+            return dayAbbreviation;
+        }
+
+        public int GetNightId(DateTime date)
+        {
+            int nightId = -1;
+
+            foreach (MounthWork item in mounthWork)
+            {
+                if (item.GetDate() == date)
+                {
+                    nightId = item.GetNightId();
+                }
+            }
+
+            return nightId;
+        }
+
         public int GetNight(DateTime date)
         {
             int night = -1;
@@ -77,6 +122,21 @@ namespace Salary_for_workers
             }
 
             return night;
+        }
+
+        public string GetNightAbbreviation(DateTime date)
+        {
+            string nightAbbreviation = "-1";
+
+            foreach (MounthWork item in mounthWork)
+            {
+                if (item.GetDate() == date)
+                {
+                    nightAbbreviation = item.GetNightAbbreviation();
+                }
+            }
+
+            return nightAbbreviation;
         }
 
         public bool UpdateDay(DateTime date, int day)
@@ -148,24 +208,42 @@ namespace Salary_for_workers
     {
         private int _id;
         private DateTime _date;
-        private int _day = 0;
-        private int _night = 0;
 
-        public MounthWork(int id ,DateTime date, int day, int night) 
+        private int _idDay;
+        private int _day = 0;
+        private string _dayName;
+
+        private int _idNight;
+        private int _night = 0;
+        private string _nightName;
+
+        public MounthWork(int id ,DateTime date, int idDay, int day, string dayName, int idNight , int night, string nightName) 
         {
             _id = id;
             _date = date;
+            _idDay = idDay;
             _day = day;
+            _dayName = dayName;
+            _idNight = idNight;
             _night = night;
+            _nightName = nightName;
         }
 
         public int GetId() { return _id; }
 
         public DateTime GetDate() { return _date; }
 
+        public int GetDayId() { return _idDay; }
+
         public int GetDay() { return _day; }
-        
+
+        public string GetDayAbbreviation() { return _dayName; }
+
+        public int GetNightId() { return _idNight; }
+
         public int GetNight() { return _night; }
+
+        public string GetNightAbbreviation() { return _nightName; }
 
         public void UpdateDay(int day) { _day = day; }
         

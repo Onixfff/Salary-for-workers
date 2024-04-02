@@ -45,7 +45,8 @@ namespace Salary_for_workers
                                 List<Worker> workers = await GetWorkersAsync(id, textBoxLogin.Text, encryptedPassword);
                                 if (workers.Count >0)
                                 {
-                                    Form2 form2 = new Form2(workers);
+                                    DateTime date = new DateTime(2024, 04, 01);
+                                    Form2 form2 = new Form2(workers, date);
                                     this.Visible = false;
                                     form2.ShowDialog();
                                     this.Visible = true;

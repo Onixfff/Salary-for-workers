@@ -21,20 +21,66 @@ namespace Salary_for_workers
     {
         MySqlConnection mCon = new MySqlConnection(ConfigurationManager.ConnectionStrings["local"].ConnectionString);
         private List<Worker> _workers;
+        private DateTime _datetime;
 
         public Form2(List<Worker> workers)
         {
             InitializeComponent();
             this._workers = workers;
+            SetsFurstDayOfMonth();
+        }
+
+        public Form2(List<Worker> workers, DateTime date)
+        {
+            _workers = workers;
+            _datetime = date;
+            InitializeComponent();
+            dateTimePicker1.Value = _datetime;
         }
 
         private async void Form2_Load(object sender, EventArgs e)
         {
             UpdateComboBox();
-            SetsFurstDayOfMonth();
             await TryGetDataAsync();
             ChengeToolTipDescription();
             toolTip1.SetToolTip(buttonSubmit, "");
+            dataGridView1.DataSource = UpdateDataGridView();
+            dataGridView1.Refresh();
+        }
+
+        private DataSet UpdateDataGridView()
+        {
+            DataTable dataTable = new DataTable();
+            DataSet dataSet = new DataSet();
+            
+            dataTable.Columns.Add("id", typeof(int));
+            dataTable.Columns.Add("Имя", typeof(string));
+            dataTable.Columns.Add("Фамилия", typeof(string));
+            dataTable.Columns.Add("Отчество", typeof(string));
+            dataTable.Columns.Add("Значение дня", typeof(string));
+            dataTable.Columns.Add("День", typeof(int));
+            dataTable.Columns.Add("Значение ночи", typeof(string));
+            dataTable.Columns.Add("Ночь", typeof(int));
+
+            DataRow dataRow = dataTable.NewRow();
+
+            foreach (var worker in _workers)
+            {
+                dataRow["id"] = worker.Id;
+                dataRow["Имя"] = worker.Name;
+                dataRow["Фамилия"] = worker.Surname;
+                dataRow["Отчество"] = worker.Patronymic;
+                dataRow["Значение дня"] = worker.GetDayAbbreviation(_datetime);
+                dataRow["День"] = worker.GetDay(_datetime);
+                dataRow["Значение ночи"] = worker.GetNightAbbreviation(_datetime);
+                dataRow["Ночь"] = worker.GetNight(_datetime);
+            }
+
+            dataTable.Rows.Add(dataRow);
+
+            dataSet.Tables.Add(dataTable);
+
+            return dataSet;
         }
 
         private void SetsFurstDayOfMonth()
@@ -49,8 +95,9 @@ namespace Salary_for_workers
         {
             foreach (var worrker in _workers)
             {
-                string query = "SELECT timework.Id, Date, day, night FROM authorization.timework cross join People " +
-                    "where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate and idPeople =@idPeople)";
+                //string query = "SELECT timework.Id, Date, day, night FROM authorization.timework cross join People " +
+                //    "where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate and idPeople =@idPeople)";
+                string query = "SELECT timework.Id, Date, states_day.id as idDay, day, states_day.abbreviation , states_night.id as idNight, night, states_night.abbreviation FROM authorization.timework left join people on timework.idPeople = people.Id left join states as states_day on timework.IdStateDay = states_day.Id left join states as states_night on timework.IdStateNight = states_night.id where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate and idPeople = @idPeople)";
 
                 try
                 {
@@ -68,7 +115,9 @@ namespace Salary_for_workers
                         {
                             while (await reader.ReadAsync())
                             {
-                                worrker.AddDayWork(reader.GetInt32(0), reader.GetDateTime(1), reader.GetInt32(2), reader.GetInt32(3));
+                                worrker.AddDayWork(reader.GetInt32(0), reader.GetDateTime(1),
+                                    reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4),
+                                    reader.GetInt32(5), reader.GetInt32(6), reader.GetString(7));
                             }
                         }
                     }
@@ -161,12 +210,17 @@ namespace Salary_for_workers
         {
             _workers = await TryGetDataAsync();
             GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            DataSet dataSet = UpdateDataGridView();
+            dataGridView1.DataSource = dataSet.Tables["Table1"];
+            dataGridView1.Refresh();
         }
 
         private async void dateTimePicker1_ValueChangedAsync(object sender, EventArgs e)
         {
             _workers = await TryGetDataAsync();
             GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            dataGridView1.DataSource = UpdateDataGridView();
+            dataGridView1.Refresh();
         }
 
         private Worker GetThisWorker()
