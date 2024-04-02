@@ -50,22 +50,14 @@ namespace Salary_for_workers
             toolTip1.SetToolTip(buttonSubmit, "");
             dataGridView1.DataSource = UpdateDataGridView();
             dataGridView1.Refresh();
-            DataGridViewFullSelected();
         }
 
         private void DataGridViewFullSelected()
         {
-            // Проходим по каждой строке
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                row.Selected = true;
-                // Проходим по каждой ячейке в строке
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    // Выделяем ячейку
-                    cell.Selected = true;
-                }
-            }
+            dataGridView1.SelectAll();
+
+            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Blue;
+            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
         }
 
         private DataSet UpdateDataGridView()
@@ -447,5 +439,9 @@ namespace Salary_for_workers
                 IdDay = -1;
         }
 
+        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridViewFullSelected();
+        }
     }
 }
