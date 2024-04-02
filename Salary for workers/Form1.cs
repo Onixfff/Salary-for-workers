@@ -34,7 +34,7 @@ namespace Salary_for_workers
 
                     if(encryptedPassword != null)
                     {
-                        string ovter = ciphertar.EncryptsData(encryptedPassword);
+                        //string ovter = ciphertar.EncryptsData(encryptedPassword);
                         decryptedPassword = await ciphertar.DecryptsDataAsync(encryptedPassword);
                         
                         if(decryptedPassword == textBoxPassword.Text)

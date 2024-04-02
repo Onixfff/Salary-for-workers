@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.comboBoxPeoples = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.labelDay = new System.Windows.Forms.Label();
             this.labelNight = new System.Windows.Forms.Label();
             this.textBoxDay = new System.Windows.Forms.TextBox();
@@ -46,11 +45,11 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxDayName = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBoxNightName = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -66,14 +65,6 @@
             this.comboBoxPeoples.Size = new System.Drawing.Size(313, 21);
             this.comboBoxPeoples.TabIndex = 0;
             this.comboBoxPeoples.TextChanged += new System.EventHandler(this.comboBoxPeoples_TextChanged);
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(141, 66);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 1;
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChangedAsync);
             // 
             // labelDay
             // 
@@ -161,7 +152,6 @@
             this.panel1.Controls.Add(this.labelPeople);
             this.panel1.Controls.Add(this.comboBoxPeoples);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.dateTimePicker1);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonSubmit);
             this.panel1.Location = new System.Drawing.Point(273, 217);
@@ -186,11 +176,12 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1008, 192);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.textBox1);
+            this.panel3.Controls.Add(this.textBoxDayName);
             this.panel3.Controls.Add(this.label4);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.textBoxDay);
@@ -220,12 +211,14 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Значение";
             // 
-            // textBox1
+            // textBoxDayName
             // 
-            this.textBox1.Location = new System.Drawing.Point(23, 49);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 5;
+            this.textBoxDayName.Location = new System.Drawing.Point(23, 49);
+            this.textBoxDayName.Name = "textBoxDayName";
+            this.textBoxDayName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxDayName.TabIndex = 5;
+            this.textBoxDayName.Click += new System.EventHandler(this.textBoxDayName_Click);
+            this.textBoxDayName.TextChanged += new System.EventHandler(this.textBoxDayName_TextChanged);
             // 
             // panel4
             // 
@@ -233,7 +226,7 @@
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.label6);
             this.panel4.Controls.Add(this.textBoxNight);
-            this.panel4.Controls.Add(this.textBox3);
+            this.panel4.Controls.Add(this.textBoxNightName);
             this.panel4.Controls.Add(this.labelNight);
             this.panel4.Location = new System.Drawing.Point(262, 108);
             this.panel4.Name = "panel4";
@@ -260,12 +253,14 @@
             this.label6.TabIndex = 3;
             this.label6.Text = "Время";
             // 
-            // textBox3
+            // textBoxNightName
             // 
-            this.textBox3.Location = new System.Drawing.Point(23, 49);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 2;
+            this.textBoxNightName.Location = new System.Drawing.Point(23, 49);
+            this.textBoxNightName.Name = "textBoxNightName";
+            this.textBoxNightName.Size = new System.Drawing.Size(100, 20);
+            this.textBoxNightName.TabIndex = 2;
+            this.textBoxNightName.Click += new System.EventHandler(this.textBoxNightName_Click);
+            this.textBoxNightName.TextChanged += new System.EventHandler(this.textBoxNightName_TextChanged);
             // 
             // Form2
             // 
@@ -293,7 +288,6 @@
         #endregion
 
         private System.Windows.Forms.ComboBox comboBoxPeoples;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label labelDay;
         private System.Windows.Forms.Label labelNight;
         private System.Windows.Forms.TextBox textBoxDay;
@@ -307,12 +301,12 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxDayName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxNightName;
     }
 }

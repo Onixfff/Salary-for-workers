@@ -11,6 +11,7 @@ using System.Data.SqlTypes;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,11 +24,15 @@ namespace Salary_for_workers
         private List<Worker> _workers;
         private DateTime _datetime;
 
+        public static int IdDay = -1;
+        public static string TextDay;
+        public static int IdNight = -1;
+        public static string TextNight;
+
         public Form2(List<Worker> workers)
         {
             InitializeComponent();
             this._workers = workers;
-            SetsFurstDayOfMonth();
         }
 
         public Form2(List<Worker> workers, DateTime date)
@@ -35,7 +40,6 @@ namespace Salary_for_workers
             _workers = workers;
             _datetime = date;
             InitializeComponent();
-            dateTimePicker1.Value = _datetime;
         }
 
         private async void Form2_Load(object sender, EventArgs e)
@@ -88,7 +92,7 @@ namespace Salary_for_workers
             var year = DateTime.Now.Year;
             var month = DateTime.Now.Month;
             var startDay = new DateTime(year, month, 1);
-            dateTimePicker1.Value = startDay;
+            //dateTimePicker1.Value = startDay;
         }
 
         private async Task<List<Worker>> TryGetDataAsync()
@@ -145,7 +149,11 @@ namespace Salary_for_workers
             foreach (var worker in _workers)
             {
                 comboBoxPeoples.Items.Add(worker.Name + " " + worker.Surname + " " + worker.Patronymic);
+                comboBoxPeoples.Items.Add("Выбранные");
+                comboBoxPeoples.Items.Add("Все");
             }
+
+            comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
         }
 
         private void GetDayAndNightThisDate(string fullName, DateTime date)
@@ -159,9 +167,13 @@ namespace Salary_for_workers
                 if(worker.Name == name && worker.Surname == surname && worker.Patronymic == patronymic)
                 {
                     int day, night;
+                    string nightName, dayName;
 
                     day = worker.GetDay(date);
+                    dayName = worker.GetDayAbbreviation(date);
+
                     night = worker.GetNight(date);
+                    nightName = worker.GetNightAbbreviation(date);
 
                     if(day != -1)
                     {
@@ -172,6 +184,15 @@ namespace Salary_for_workers
                         textBoxDay.Text = "";
                     }
 
+                    if(dayName != "-1")
+                    {
+                        textBoxDayName.Text = dayName;
+                    }
+                    else
+                    {
+                        textBoxDayName.Text = "";
+                    }
+
                     if(night != -1)
                     {
                         textBoxNight.Text = night.ToString();
@@ -179,6 +200,15 @@ namespace Salary_for_workers
                     else
                     {
                         textBoxNight.Text = "";
+                    }
+
+                    if(nightName != "-1")
+                    {
+                        textBoxNightName.Text = nightName;
+                    }
+                    else
+                    {
+                        textBoxNightName.Text = "";
                     }
                 }
             }
@@ -209,7 +239,7 @@ namespace Salary_for_workers
         private async void comboBoxPeoples_TextChanged(object sender, EventArgs e)
         {
             _workers = await TryGetDataAsync();
-            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
             DataSet dataSet = UpdateDataGridView();
             dataGridView1.DataSource = dataSet.Tables["Table1"];
             dataGridView1.Refresh();
@@ -218,7 +248,7 @@ namespace Salary_for_workers
         private async void dateTimePicker1_ValueChangedAsync(object sender, EventArgs e)
         {
             _workers = await TryGetDataAsync();
-            GetDayAndNightThisDate(comboBoxPeoples.Text, dateTimePicker1.Value);
+            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
             dataGridView1.DataSource = UpdateDataGridView();
             dataGridView1.Refresh();
         }
@@ -273,7 +303,25 @@ namespace Salary_for_workers
 
             var dateMysql =  mySqlDateTime.GetDateTime().Date.ToString("yyyy-MM-dd");
 
-            string query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`) VALUES ('{dateMysql}', '{day}', '{night}', '{id}');";
+            string query;
+
+            if(IdDay != -1 && IdNight != -1)
+            {
+                query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`, `IdStateDay`, `IdStateNight`) VALUES ('{dateMysql}', '{day}', '{night}', '{id}', '{IdDay}', '{IdNight}');";
+            }
+            else if(IdNight == -1)
+            {
+                query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `idPeople`, `IdStateDay`) VALUES ('{dateMysql}', '{day}', '{id}', '{IdDay}');";
+            }
+            else if(IdDay == -1)
+            {
+                query = $"INSERT INTO `authorization`.`timework` (`Date`, `Night`, `idPeople`, `IdStateNight`) VALUES ('{dateMysql}', '{night}', '{id}', '{IdNight}');";
+            }
+            else
+            {
+                MessageBox.Show("Данные по атрибутам дня или ночи отсутствуют");
+                return;
+            }
 
             try
             {
@@ -297,16 +345,12 @@ namespace Salary_for_workers
         {
             Worker worker = GetThisWorker();
 
-            int dayInt, nightInt;
+            bool isCompliteParseDay = int.TryParse(textBoxDay.Text, out int dayInt);
+            bool isCompliteParseNight = int.TryParse(textBoxNight.Text, out int nightInt);
 
-            try
+            if(!isCompliteParseDay && !isCompliteParseNight)
             {
-                dayInt = Convert.ToInt32(textBoxDay.Text.Trim());
-                nightInt = Convert.ToInt32(textBoxNight.Text.Trim());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Неправельно записаны данные в поля 'день/ночь'");
+                MessageBox.Show("Пустые время день/ночь");
                 return;
             }
 
@@ -316,8 +360,8 @@ namespace Salary_for_workers
                 return;
             }
 
-            int day = worker.GetDay(dateTimePicker1.Value);
-            int night = worker.GetNight(dateTimePicker1.Value);
+            int day = worker.GetDay(_datetime);
+            int night = worker.GetNight(_datetime);
 
             if(dayInt == day && nightInt == night)
             {
@@ -327,11 +371,11 @@ namespace Salary_for_workers
 
             if(day == -1 && night == -1) 
             {
-                await InsertDataAsync(dayInt, nightInt, dateTimePicker1.Value, worker.Id);
+                await InsertDataAsync(dayInt, nightInt, _datetime, worker.Id);
             }
             else
             {
-                int idDay = worker.GetId(dateTimePicker1.Value);
+                int idDay = worker.GetId(_datetime);
 
                 if(idDay != -1)
                 {
@@ -343,6 +387,47 @@ namespace Salary_for_workers
                     return;
                 }
             }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // от 0 до 7 max;
+            //эти значения передать уже куда-то для сбора idDay и idNight и после отпавлять
+            //columnIndex 0/7
+            //rowIndex = (строка которую выбрал пользователь и по которой надо идти и забирать данные;
+            var f = dataGridView1.CurrentCell;
+        }
+
+        private void textBoxDayName_Click(object sender, EventArgs e)
+        {
+            States states = new States(true);
+            states.ShowDialog();
+            if(TextDay != null)
+                textBoxDayName.Text = TextDay;
+        }
+
+        private void textBoxNightName_Click(object sender, EventArgs e)
+        {
+            States states = new States(false);
+            states.ShowDialog();
+            if (TextNight != null)
+                textBoxNightName.Text = TextNight;
+        }
+
+        private void textBoxNightName_TextChanged(object sender, EventArgs e)
+        {
+            if (textBoxNightName.Text.Trim().Length > 0)
+                return;
+            else
+                IdNight = -1;
+        }
+
+        private void textBoxDayName_TextChanged(object sender, EventArgs e)
+        {
+            if (textBoxDayName.Text.Trim().Length > 0)
+                return;
+            else
+                IdDay = -1;
         }
     }
 }
