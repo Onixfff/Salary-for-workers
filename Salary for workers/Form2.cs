@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Drawing;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,14 +28,6 @@ namespace Salary_for_workers
         private DateTime _datetime;
         private CancellationTokenSource _cancellationTokenSource;
         private List<SelectedWorkers> selectedWorkers = new List<SelectedWorkers>();
-
-        public Form2(List<Worker> workers, MySqlConnection mCon)
-        {
-            _mCon = mCon;
-            InitializeComponent();
-            _cancellationTokenSource = new CancellationTokenSource();
-            this._workers = workers;
-        }
 
         public Form2(List<Worker> workers, DateTime date, MySqlConnection mCon)
         {
@@ -357,7 +350,69 @@ namespace Salary_for_workers
 
         private async Task UpdateDataAsync(int day, int night, List<int> id, List<int> idDay)
         {
+            if (IdDay == -1 && IdNight == -1)
+            {
+                MessageBox.Show("Не установлены атрибуты", "Ошибка!");
+                return;
+            }
+
+            int lastCount = id.Count - 1;
             string query = $"UPDATE `authorization`.`timework` SET `Day` = '{day}', `Night` = '{night}', `idPeople` = '{id}' WHERE (`Id` = '{idDay}');";
+            
+            string startQuery = "UPDATE `authorization`.`timework`SET ";
+            
+            string dayQuery = "`Day` = CASE ";
+            string nightQuery = "`Night` = CASE ";
+            string idPeopleQuery = "`idPeople` = CASE ";
+            string IdStateDayQuery = "`IdStateDay` = CASE ";
+            string IdStateNight = "`IdStateNight` = CASE ";
+            string where = " WHERE `Id` IN ";
+
+            for (int i = 0; i < id.Count; i++)
+            {
+                dayQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{day}'";
+                nightQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{night}'";
+                idPeopleQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{id[i]}'";
+                IdStateDayQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{IdDay}'";
+                IdStateNight += $"WHEN `Id` = '{idDay[i]}' THEN '{IdNight}'";
+                where += $"('{idDay[i]}');";
+            }
+
+            if(IdDay != -1 && IdNight != -1)
+            {
+
+                dayQuery += "ELSE `Day` END,";
+                nightQuery += "ELSE `Night` END,";
+                idPeopleQuery += "ELSE `idPeople` END,";
+                IdStateDayQuery += "ELSE `IdStateDay` END,";
+                IdStateNight += "ELSE `IdStateNight` END";
+                query = startQuery + dayQuery + nightQuery + idPeopleQuery + IdStateDayQuery + IdStateNight + where;
+
+            }
+            else if (IdNight == -1)
+            {
+                dayQuery += "ELSE `Day` END,";
+                nightQuery += "ELSE `Night` END,";
+                idPeopleQuery += "ELSE `idPeople` END,";
+                IdStateDayQuery += "ELSE `IdStateDay` END";
+
+                query = startQuery + dayQuery + nightQuery + idPeopleQuery + IdStateDayQuery + where;
+
+            }
+            else if (IdDay == -1)
+            {
+                dayQuery += "ELSE `Day` END,";
+                nightQuery += "ELSE `Night` END,";
+                IdStateDayQuery += "ELSE `IdStateDay` END";
+
+                query = startQuery + dayQuery + nightQuery + idPeopleQuery + IdStateNight + where;
+
+            }
+            else
+            {
+                MessageBox.Show("Данные по атрибутам дня или ночи отсутствуют");
+                return;
+            }
 
             try
             {
@@ -569,7 +624,7 @@ namespace Salary_for_workers
                     }
                 }
 
-                //await UpdateDataAsync(dayInt, nightInt, ids, idDays);
+                await UpdateDataAsync(dayInt, nightInt, ids, idDays);
             }
         }
 
