@@ -56,16 +56,6 @@ namespace Salary_for_workers
             return connection;
         }
 
-        private void DataGridViewFullSelected()
-        {
-            dataGridView1.SelectAll();
-
-            dataGridView1.DefaultCellStyle.SelectionBackColor = Color.Blue;
-            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
-
-            
-        }
-
         private DataSet UpdateDataGridView()
         {
             DataTable dataTable = new DataTable();
@@ -191,7 +181,6 @@ namespace Salary_for_workers
 
             comboBoxPeoples.Items.Add("Выбранные");
             comboBoxPeoples.Items.Add("Все");
-            comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
         }
 
         private void GetDayAndNightThisDate(string fullName, DateTime date)
@@ -366,7 +355,7 @@ namespace Salary_for_workers
             string idPeopleQuery = "`idPeople` = CASE ";
             string IdStateDayQuery = "`IdStateDay` = CASE ";
             string IdStateNight = "`IdStateNight` = CASE ";
-            string where = " WHERE `Id` IN ";
+            string where = " WHERE `Id` IN (";
 
             for (int i = 0; i < id.Count; i++)
             {
@@ -375,7 +364,14 @@ namespace Salary_for_workers
                 idPeopleQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{id[i]}'";
                 IdStateDayQuery += $"WHEN `Id` = '{idDay[i]}' THEN '{IdDay}'";
                 IdStateNight += $"WHEN `Id` = '{idDay[i]}' THEN '{IdNight}'";
-                where += $"('{idDay[i]}');";
+                if(lastCount == i)
+                {
+                    where += $"'{idDay[i]}')";
+                }
+                else
+                {
+                    where += $"'{idDay[i]}',";
+                }
             }
 
             if(IdDay != -1 && IdNight != -1)
@@ -403,7 +399,8 @@ namespace Salary_for_workers
             {
                 dayQuery += "ELSE `Day` END,";
                 nightQuery += "ELSE `Night` END,";
-                IdStateDayQuery += "ELSE `IdStateDay` END";
+                idPeopleQuery += "ELSE `idPeople` END,";
+                IdStateNight += "ELSE `IdStateNight` END";
 
                 query = startQuery + dayQuery + nightQuery + idPeopleQuery + IdStateNight + where;
 
@@ -454,11 +451,11 @@ namespace Salary_for_workers
 
                     if (lastDate == i)
                     {
-                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdDay}', '{IdNight}');";
+                        query += $"('{dateMysql}', '{day}', '{night}', '{ids[i]}', '{IdDay}', '{IdNight}');";
                     }
                     else
                     {
-                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdDay}', '{IdNight}'), ";
+                        query += $"('{dateMysql}', '{day}', '{night}', '{ids[i]}', '{IdDay}', '{IdNight}'), ";
                     }
 
                 }
@@ -626,24 +623,64 @@ namespace Salary_for_workers
 
                 await UpdateDataAsync(dayInt, nightInt, ids, idDays);
             }
+
+            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
+            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
+            DataSet dataSet = UpdateDataGridView();
+            dataGridView1.DataSource = dataSet.Tables["Table1"];
+            dataGridView1.Refresh();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             SelectedWorkers selectedWorker;
 
-            if(dataGridView1.SelectedRows.Count == dataGridView1.RowCount)
+            // Проверяем, удерживается ли клавиша Ctrl
+            bool ctrlPressed = (Control.ModifierKeys & Keys.Control) == Keys.Control;
+
+            // Проверяем, удерживается ли клавиша Shift
+            bool shiftPressed = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
+
+            if (ctrlPressed)
             {
-                selectedWorkers.Clear();
-                comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
+                // Если удерживается клавиша Ctrl
+                // Ваш код для обработки клика с удерживанием клавиши Ctrl
+                comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 2;
             }
-            else if (dataGridView1.SelectedRows.Count > 1)
+            else if (shiftPressed)
             {
+                // Если удерживается клавиша Shift
+                // Ваш код для обработки клика с удерживанием клавиши Shift
                 comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 2;
             }
             else
             {
+                // Если не удерживается ни Ctrl, ни Shift
+                // Ваш код для обработки обычного клика
+
+                if (dataGridView1.SelectedRows.Count == dataGridView1.RowCount)
+                {
+                    comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
+                }
+                else
+                {
+                    if (dataGridView1.SelectedRows.Count > 0)
+                    {
+                        foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                comboBoxPeoples.SelectedIndex = row.Index;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (dataGridView1.SelectedRows.Count == dataGridView1.RowCount)
+            {
                 selectedWorkers.Clear();
+                comboBoxPeoples.SelectedIndex = comboBoxPeoples.Items.Count - 1;
             }
 
             if (dataGridView1.SelectedRows.Count > 0)
@@ -705,11 +742,6 @@ namespace Salary_for_workers
                 return;
             else
                 IdDay = -1;
-        }
-
-        private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {
-            DataGridViewFullSelected();
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)

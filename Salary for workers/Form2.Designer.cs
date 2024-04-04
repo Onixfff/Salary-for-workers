@@ -36,8 +36,6 @@
             this.textBoxNight = new System.Windows.Forms.TextBox();
             this.labelPeople = new System.Windows.Forms.Label();
             this.buttonSubmit = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -112,7 +110,7 @@
             // 
             // buttonSubmit
             // 
-            this.buttonSubmit.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.buttonSubmit.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.buttonSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonSubmit.Location = new System.Drawing.Point(164, 253);
             this.buttonSubmit.Name = "buttonSubmit";
@@ -121,24 +119,6 @@
             this.buttonSubmit.Text = "Сохранить";
             this.buttonSubmit.UseVisualStyleBackColor = false;
             this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(41, 287);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Сохранить";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 300);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "label2";
             // 
             // toolTip1
             // 
@@ -151,8 +131,6 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.labelPeople);
             this.panel1.Controls.Add(this.comboBoxPeoples);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonSubmit);
             this.panel1.Location = new System.Drawing.Point(273, 217);
             this.panel1.Name = "panel1";
@@ -262,7 +240,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(1008, 192);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridView1_DataBindingComplete);
             // 
             // Form2
             // 
@@ -297,8 +274,6 @@
         private System.Windows.Forms.TextBox textBoxNight;
         private System.Windows.Forms.Label labelPeople;
         private System.Windows.Forms.Button buttonSubmit;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
