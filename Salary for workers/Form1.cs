@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -32,24 +31,23 @@ namespace Salary_for_workers
                 {
                     encryptedPassword = await CheckInDBData(sql, textBoxLogin.Text);
 
-                    if(encryptedPassword != null)
+                    if (encryptedPassword != null)
                     {
                         //string ovter = ciphertar.EncryptsData(encryptedPassword);
                         decryptedPassword = await ciphertar.DecryptsDataAsync(encryptedPassword);
-                        
-                        if(decryptedPassword == textBoxPassword.Text)
+
+                        if (decryptedPassword == textBoxPassword.Text)
                         {
                             int id = await GetIdPositionsAsync(textBoxLogin.Text, encryptedPassword);
                             if (id != -1)
                             {
                                 List<Worker> workers = await GetWorkersAsync(id, textBoxLogin.Text, encryptedPassword);
-                                if (workers.Count >0)
+                                if (workers.Count > 0)
                                 {
-                                    DateTime date = new DateTime(2024, 04, 01);
-                                    Form2 form2 = new Form2(workers, date);
+                                    MainForm mainForm = new MainForm(workers, mCon);
                                     this.Visible = false;
-                                    form2.ShowDialog();
-                                    this.Visible = true;
+                                    mainForm.ShowDialog();
+                                    this.Close();
                                 }
                                 else
                                 {
@@ -67,27 +65,30 @@ namespace Salary_for_workers
                         }
                     }
                 }
-                catch (InRowChangingEventException)
+                catch (InRowChangingEventException ex)
                 {
                     MessageBox.Show("Ошибка входа #44515");
-                    Console.WriteLine("Нету idPosition");
+                    Console.WriteLine("Нету idPosition" + ex.Message);
                 }
-                catch (DllNotFoundException)
+                catch (DllNotFoundException ex)
                 {
                     MessageBox.Show("Ошибка входа #44520");
-                    Console.WriteLine("Под вашим пользователем нету подчиненных");
+                    Console.WriteLine("Под вашим пользователем нету подчиненных" + ex.Message);
                 }
-                catch (AggregateException)
+                catch (AggregateException ex)
                 {
                     MessageBox.Show("Ошибка входа #44525");
+                    await Console.Out.WriteLineAsync(ex.Message);
                 }
-                catch (MySqlException)
+                catch (MySqlException ex)
                 {
                     MessageBox.Show("Ошибка входа #44530");
+                    await Console.Out.WriteLineAsync(ex.Message);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Ошибка входа #44535");
+                    Console.WriteLine(ex);
                 }
             }
             else
@@ -101,8 +102,8 @@ namespace Salary_for_workers
         private bool CheckInput(string text)
         {
             var textTrim = text.Trim();
-            
-            if(textTrim.Length > 0 && text!= null)
+
+            if (textTrim.Length > 0 && text != null)
                 return true;
             else
                 return false;
@@ -138,11 +139,11 @@ namespace Salary_for_workers
             {
                 throw new Exception("Ошибка при открытии бд \n" + ex);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Ошибка n" + ex);
             }
-            finally 
+            finally
             {
                 mCon.Close();
             }
@@ -199,13 +200,14 @@ namespace Salary_for_workers
 
                     await mCon.OpenAsync();
 
-                    using (MySqlDataReader reader = (MySqlDataReader) await command.ExecuteReaderAsync())
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
                             Worker worker = new Worker(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4));
                             workers.Add(worker);
                         }
+                        reader.Close();
                     }
                 }
             }

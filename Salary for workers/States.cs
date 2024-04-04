@@ -1,12 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -71,7 +66,7 @@ namespace Salary_for_workers
             //rowIndex = (строка которую выбрал пользователь и по которой надо идти и забирать данные;
 
             DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
-            
+
             int id = Convert.ToInt32(selectedRow.Cells["id"].Value);
             string atribyt = selectedRow.Cells["абривиатура"].Value.ToString();
 

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.IO;
-using System.ComponentModel;
-using System.Windows.Forms.VisualStyles;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace Salary_for_workers
 {
