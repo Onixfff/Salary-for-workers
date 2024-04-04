@@ -355,59 +355,26 @@ namespace Salary_for_workers
             return returnWorkers;
         }
 
-        //private async Task UpdateDataAsync(int day, int night, List<int> id, List<int> idDay)
-        //{
-        //    string query = $"UPDATE `authorization`.`timework` SET `Day` = '{day}', `Night` = '{night}', `idPeople` = '{id}' WHERE (`Id` = '{idDay}');";
+        private async Task UpdateDataAsync(int day, int night, List<int> id, List<int> idDay)
+        {
+            string query = $"UPDATE `authorization`.`timework` SET `Day` = '{day}', `Night` = '{night}', `idPeople` = '{id}' WHERE (`Id` = '{idDay}');";
 
-        //    if (IdDay != -1 && IdNight != -1)
-        //    {
-        //        query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`, `IdStateDay`, `IdStateNight`) VALUES ";
-        //        foreach (var id in ids)
-        //        {
-        //            query += $"('{dateMysql}', '{day}', '{night}', '{id}', '{IdDay}', '{IdNight}')";
-        //        }
-        //        query += ";";
-        //    }
-        //    else if (IdNight == -1)
-        //    {
-        //        query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `idPeople`, `IdStateDay`) VALUES ";
-        //        foreach (var id in ids)
-        //        {
-        //            query += $"('{dateMysql}', '{day}', '{id}', '{IdDay}')";
-        //        }
-        //        query += ";";
-        //    }
-        //    else if (IdDay == -1)
-        //    {
-        //        query = $"INSERT INTO `authorization`.`timework` (`Date`, `Night`, `idPeople`, `IdStateNight`) VALUES ";
-        //        foreach (var id in ids)
-        //        {
-        //            query += $"('{dateMysql}', '{night}', '{id}', '{IdNight}');";
-        //        }
-        //        query += ";";
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Данные по атрибутам дня или ночи отсутствуют");
-        //        return;
-        //    }
+            try
+            {
+                await _mCon.OpenAsync();
 
-        //    try
-        //    {
-        //        await _mCon.OpenAsync();
-
-        //        using (MySqlCommand command = new MySqlCommand(query, _mCon))
-        //        {
-        //            await command.ExecuteNonQueryAsync();
-        //            MessageBox.Show("Данные изменены");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //    finally { _mCon.Close(); }
-        //}
+                using (MySqlCommand command = new MySqlCommand(query, _mCon))
+                {
+                    await command.ExecuteNonQueryAsync();
+                    MessageBox.Show("Данные изменены");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { _mCon.Close(); }
+        }
 
         private async Task InsertDataAsync(int day, int night, DateTime date, List<int> ids)
         {
@@ -425,11 +392,21 @@ namespace Salary_for_workers
             else if(IdDay != -1 && IdNight != -1)
             {
                 query = $"INSERT INTO `authorization`.`timework` (`Date`, `Day`, `Night`, `idPeople`, `IdStateDay`, `IdStateNight`) VALUES ";
-                foreach (var id in ids)
+                int lastDate = ids.Count - 1;
+
+                for (int i = 0; i < ids.Count; i++)
                 {
-                    query += $"('{dateMysql}', '{day}', '{night}', '{id}', '{IdDay}', '{IdNight}')";
+
+                    if (lastDate == i)
+                    {
+                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdDay}', '{IdNight}');";
+                    }
+                    else
+                    {
+                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdDay}', '{IdNight}'), ";
+                    }
+
                 }
-                query += ";";
             }
             else if (IdNight == -1)
             {
@@ -454,12 +431,22 @@ namespace Salary_for_workers
             else if (IdDay == -1)
             {
                 query = $"INSERT INTO `authorization`.`timework` (`Date`, `Night`, `idPeople`, `IdStateNight`) VALUES ";
-                
-                foreach (var id in ids)
+
+                int lastDate = ids.Count - 1;
+
+                for (int i = 0; i < ids.Count; i++)
                 {
-                    query += $"('{dateMysql}', '{night}', '{id}', '{IdNight}')";
+
+                    if (lastDate == i)
+                    {
+                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdNight}');";
+                    }
+                    else
+                    {
+                        query += $"('{dateMysql}', '{day}', '{ids[i]}', '{IdNight}'), ";
+                    }
+
                 }
-                query += ";";
             }
             else
             {
