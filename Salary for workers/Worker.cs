@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Salary_for_workers
 {
@@ -46,13 +47,14 @@ namespace Salary_for_workers
 
         public int? GetDayId(DateTime date)
         {
-            int? dayId = -1;
+            int? dayId = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     dayId = item.GetDayId();
+                    break;
                 }
             }
 
@@ -61,13 +63,14 @@ namespace Salary_for_workers
 
         public int? GetDay(DateTime date)
         {
-            int? day = -1;
+            int? day = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     day = item.GetDay();
+                    break;
                 }
             }
 
@@ -76,13 +79,14 @@ namespace Salary_for_workers
 
         public string GetDayAbbreviation(DateTime date)
         {
-            string dayAbbreviation = "-1";
+            string dayAbbreviation = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     dayAbbreviation = item.GetDayAbbreviation();
+                    break;
                 }
             }
 
@@ -91,13 +95,14 @@ namespace Salary_for_workers
 
         public int? GetNightId(DateTime date)
         {
-            int? nightId = -1;
+            int? nightId = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     nightId = item.GetNightId();
+                    break;
                 }
             }
 
@@ -106,13 +111,14 @@ namespace Salary_for_workers
 
         public int? GetNight(DateTime date)
         {
-            int? night = -1;
+            int? night = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     night = item.GetNight();
+                    break;
                 }
             }
 
@@ -121,13 +127,14 @@ namespace Salary_for_workers
 
         public string GetNightAbbreviation(DateTime date)
         {
-            string nightAbbreviation = "-1";
+            string nightAbbreviation = null;
 
             foreach (MounthWork item in mounthWork)
             {
                 if (item.GetDate() == date)
                 {
                     nightAbbreviation = item.GetNightAbbreviation();
+                    break;
                 }
             }
 
@@ -197,67 +204,5 @@ namespace Salary_for_workers
 
             return delite;
         }
-    }
-
-    public class MounthWork
-    {
-        private int _id;
-        private DateTime _date;
-
-        private int? _idDay;
-        private int? _day = 0;
-        private string _dayName;
-
-        private int? _idNight;
-        private int? _night = 0;
-        private string _nightName;
-
-        public MounthWork(int id, DateTime date, int? idDay, int? day, string dayName, int? idNight, int? night, string nightName)
-        {
-            _id = id;
-            _date = date;
-            _idDay = idDay;
-            _day = day;
-            _dayName = dayName;
-            _idNight = idNight;
-            _night = night;
-            _nightName = nightName;
-        }
-
-        public int GetId() { return _id; }
-
-        public DateTime GetDate() { return _date; }
-
-        public int? GetDayId() { return _idDay; }
-
-        public int? GetDay() 
-        {
-            if( _day != null )
-                return _day; 
-            else
-                return -1;
-        }
-
-        public string GetDayAbbreviation() { return _dayName; }
-
-        public int? GetNightId() { return _idNight; }
-
-        public int? GetNight() 
-        { 
-            if(_night != null) 
-                return _night;
-            else
-                return -1;
-        }
-
-        public string GetNightAbbreviation() { return _nightName; }
-
-        public void UpdateDay(int day) { _day = day; }
-
-        public void UpdateNight(int night) { _night = night; }
-
-        public void DeliteDay() { _day = 0; }
-
-        public void DeliteNight() { _night = 0; }
     }
 }

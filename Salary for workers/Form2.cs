@@ -42,10 +42,9 @@ namespace Salary_for_workers
         {
             _mCon = await CreateConnectionAsync();
             UpdateComboBox();
+            comboBoxPeoples.SelectedIndex = 0;
             ChengeToolTipDescription();
             toolTip1.SetToolTip(buttonSubmit, "");
-            dataGridView1.DataSource = UpdateDataGridView();
-            dataGridView1.Refresh();
             RefreshDataGridView();
         }
 
@@ -76,14 +75,17 @@ namespace Salary_for_workers
             {
                 DataRow dataRow = dataTable.NewRow();
 
+                object nightValue = worker.GetNight(_datetime) != null ? (object)worker.GetNight(_datetime) : DBNull.Value;
+                object dayValue = worker.GetDay(_datetime) != null ? (object)worker.GetDay(_datetime) : DBNull.Value;
+
                 dataRow["id"] = worker.Id;
                 dataRow["Имя"] = worker.Name;
                 dataRow["Фамилия"] = worker.Surname;
                 dataRow["Отчество"] = worker.Patronymic;
                 dataRow["Значение дня"] = worker.GetDayAbbreviation(_datetime);
-                dataRow["День"] = worker.GetDay(_datetime);
+                dataRow["День"] = dayValue;
                 dataRow["Значение ночи"] = worker.GetNightAbbreviation(_datetime);
-                dataRow["Ночь"] = worker.GetNight(_datetime);
+                dataRow["Ночь"] = nightValue;
 
                 dataTable.Rows.Add(dataRow);
             }
@@ -755,21 +757,5 @@ namespace Salary_for_workers
             dataGridView1.DataSource = dataSet.Tables["Table1"];
             dataGridView1.Refresh();
         }
-    }
-}
-
-public class SelectedWorkers
-{
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-    public string Surname { get; private set; }
-    public string Patronymic { get; private set; }
-
-    public SelectedWorkers( int id, string name, string surname, string patronymic)
-    {
-        Id = id;
-        Name = name;
-        Surname = surname;
-        Patronymic = patronymic;
     }
 }
