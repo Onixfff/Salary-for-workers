@@ -204,5 +204,10 @@ namespace Salary_for_workers
 
             return delite;
         }
+
+        public void ClearListDayWork()
+        {
+            mounthWork.Clear();
+        }
     }
 }

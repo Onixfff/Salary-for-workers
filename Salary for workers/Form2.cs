@@ -42,10 +42,9 @@ namespace Salary_for_workers
         {
             _mCon = await CreateConnectionAsync();
             UpdateComboBox();
-            comboBoxPeoples.SelectedIndex = 0;
             ChengeToolTipDescription();
-            toolTip1.SetToolTip(buttonSubmit, "");
-            RefreshDataGridView();
+            await UpdateAsync();
+            comboBoxPeoples.SelectedIndex = 0;
         }
 
         private async Task<MySqlConnection> CreateConnectionAsync()
@@ -106,7 +105,6 @@ namespace Salary_for_workers
         private async Task<List<Worker>> TryGetDataAsync(CancellationToken cancellationToken)
         {
             string query = "SELECT timework.Id, Date, states_day.id as idDay, day, states_day.abbreviation , states_night.id as idNight, night, states_night.abbreviation FROM authorization.timework left join people on timework.idPeople = people.Id left join states as states_day on timework.IdStateDay = states_day.Id left join states as states_night on timework.IdStateNight = states_night.id where (name = @name and surname = @surname and Patronymic = @Patronymic and EmploymentDate = @EmploymentDate and idPeople = @idPeople and date = @date)";
-            
             
             try
             {
@@ -196,14 +194,16 @@ namespace Salary_for_workers
             {
                 if (worker.Name == name && worker.Surname == surname && worker.Patronymic == patronymic)
                 {
-                    int? day, night;
+                    int? day, night, dayInt, nightInt;
                     string nightName, dayName;
 
                     day = worker.GetDay(date);
                     dayName = worker.GetDayAbbreviation(date);
+                    dayInt = worker.GetDayId(date);
 
                     night = worker.GetNight(date);
                     nightName = worker.GetNightAbbreviation(date);
+                    nightInt = worker.GetNightId(date);
 
                     if (day != -1 && day != null)
                     {
@@ -217,6 +217,7 @@ namespace Salary_for_workers
                     if (dayName != "-1" && dayName != null)
                     {
                         textBoxDayName.Text = dayName;
+                        IdDay = (int)dayInt;
                     }
                     else
                     {
@@ -235,6 +236,7 @@ namespace Salary_for_workers
                     if (nightName != "-1" && nightName != null)
                     {
                         textBoxNightName.Text = nightName;
+                        IdNight = (int)nightInt;
                     }
                     else
                     {
@@ -264,14 +266,6 @@ namespace Salary_for_workers
             {
                 patronymic = parts[2];
             }
-        }
-
-        private async void dateTimePicker1_ValueChangedAsync(object sender, EventArgs e)
-        {
-            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
-            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
-            dataGridView1.DataSource = UpdateDataGridView();
-            dataGridView1.Refresh();
         }
 
         private List<Worker> GetThisWorkers()
@@ -340,7 +334,7 @@ namespace Salary_for_workers
             }
 
             int lastCount = id.Count - 1;
-            string query = $"UPDATE `authorization`.`timework` SET `Day` = '{day}', `Night` = '{night}', `idPeople` = '{id}' WHERE (`Id` = '{idDay}');";
+            string query;
             
             string startQuery = "UPDATE `authorization`.`timework`SET ";
             
@@ -412,7 +406,6 @@ namespace Salary_for_workers
                 using (MySqlCommand command = new MySqlCommand(query, _mCon))
                 {
                     await command.ExecuteNonQueryAsync();
-                    RefreshDataGridView();
                     MessageBox.Show("Данные изменены");
                 }
             }
@@ -509,7 +502,6 @@ namespace Salary_for_workers
                 {
 
                     await command.ExecuteNonQueryAsync();
-                    RefreshDataGridView();
                     MessageBox.Show("Данные добавлены в базу данных");
                 }
             }
@@ -546,15 +538,15 @@ namespace Salary_for_workers
                 int? day = worker.GetDay(_datetime);
                 int? night = worker.GetNight(_datetime);
 
-                if (day == -1 && night == -1)
+                if (day == null && night == null)
                 {
                     insert = true;
                 }
-                else if (day != -1)
+                else if (day != null)
                 {
                     update = true;
                 }
-                else if (night != -1)
+                else if (night != null)
                 {
                     update = true;
                 }
@@ -620,11 +612,9 @@ namespace Salary_for_workers
                 await UpdateDataAsync(dayInt, nightInt, ids, idDays);
             }
 
-            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
-            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
-            DataSet dataSet = UpdateDataGridView();
-            dataGridView1.DataSource = dataSet.Tables["Table1"];
-            dataGridView1.Refresh();
+            await UpdateAsync();
+            comboBoxPeoples.SelectedIndex = 0;
+
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -745,10 +735,20 @@ namespace Salary_for_workers
             _cancellationTokenSource.Cancel();
         }
 
-        private async void comboBoxPeoples_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxPeoples_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
             GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
+        }
+
+        private async Task UpdateAsync()
+        {
+            foreach (var item in _workers)
+            {
+                item.ClearListDayWork();
+            }
+
+            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
+            RefreshDataGridView();
         }
 
         private void RefreshDataGridView()

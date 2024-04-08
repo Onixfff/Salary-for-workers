@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.comboBoxPeoples = new System.Windows.Forms.ComboBox();
             this.labelDay = new System.Windows.Forms.Label();
             this.labelNight = new System.Windows.Forms.Label();
@@ -36,7 +35,6 @@
             this.textBoxNight = new System.Windows.Forms.TextBox();
             this.labelPeople = new System.Windows.Forms.Label();
             this.buttonSubmit = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -119,10 +117,6 @@
             this.buttonSubmit.Text = "Сохранить";
             this.buttonSubmit.UseVisualStyleBackColor = false;
             this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.ToolTipTitle = "Сохранить";
             // 
             // panel1
             // 
@@ -275,7 +269,6 @@
         private System.Windows.Forms.TextBox textBoxNight;
         private System.Windows.Forms.Label labelPeople;
         private System.Windows.Forms.Button buttonSubmit;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView dataGridView1;
