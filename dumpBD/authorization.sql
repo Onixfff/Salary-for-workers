@@ -98,7 +98,7 @@ CREATE TABLE `people` (
 
 LOCK TABLES `people` WRITE;
 /*!40000 ALTER TABLE `people` DISABLE KEYS */;
-INSERT INTO `people` VALUES (1,'Alex','Srr','RE','2021-01-20 01:00:00',1,1),(2,'Юра','Александрович','Александров','2001-01-01 00:00:00',3,1),(3,'Алексей','Бибинов','Эдуардович','2022-02-01 00:00:00',2,1);
+INSERT INTO `people` VALUES (1,'Alex','Srr','RE','2021-01-20 01:00:00',1,1),(2,'Юра','Александрович','Александров','2001-01-01 00:00:00',3,2),(3,'Алексей','Бибинов','Эдуардович','2022-02-01 00:00:00',2,1);
 /*!40000 ALTER TABLE `people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +176,7 @@ CREATE TABLE `timework` (
   CONSTRAINT `idPeoples` FOREIGN KEY (`idPeople`) REFERENCES `people` (`Id`),
   CONSTRAINT `IdStateDay` FOREIGN KEY (`IdStateDay`) REFERENCES `states` (`id`),
   CONSTRAINT `IdStateNight` FOREIGN KEY (`IdStateNight`) REFERENCES `states` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +185,7 @@ CREATE TABLE `timework` (
 
 LOCK TABLES `timework` WRITE;
 /*!40000 ALTER TABLE `timework` DISABLE KEYS */;
-INSERT INTO `timework` VALUES (1,'2024-03-28',12,13,2,1,2),(2,'2024-03-29',13,14,2,1,2),(3,'2024-04-01',13,13,3,1,2),(4,'2024-04-01',33,22,3,1,1);
+INSERT INTO `timework` VALUES (1,'2024-03-28',12,13,2,1,2),(2,'2024-03-29',13,14,2,1,2),(3,'2024-04-01',13,13,3,1,2),(4,'2024-04-01',3,5,3,5,16),(7,'2024-04-15',13,NULL,2,1,NULL),(8,'2024-04-15',13,NULL,3,1,NULL),(9,'2024-04-01',4,2,1,13,13),(10,'2024-04-18',31,43,3,8,11),(11,'2024-04-18',31,43,1,8,11),(12,'2024-04-30',43,4,3,15,15),(13,'2024-04-30',42,NULL,1,6,NULL);
 /*!40000 ALTER TABLE `timework` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -198,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-02 22:42:36
+-- Dump completed on 2024-04-08 10:50:29
