@@ -46,6 +46,7 @@ namespace Salary_for_workers
             toolTip1.SetToolTip(buttonSubmit, "");
             dataGridView1.DataSource = UpdateDataGridView();
             dataGridView1.Refresh();
+            RefreshDataGridView();
         }
 
         private async Task<MySqlConnection> CreateConnectionAsync()
@@ -263,15 +264,6 @@ namespace Salary_for_workers
             }
         }
 
-        private async void comboBoxPeoples_TextChanged(object sender, EventArgs e)
-        {
-            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
-            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
-            DataSet dataSet = UpdateDataGridView();
-            dataGridView1.DataSource = dataSet.Tables["Table1"];
-            dataGridView1.Refresh();
-        }
-
         private async void dateTimePicker1_ValueChangedAsync(object sender, EventArgs e)
         {
             _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
@@ -418,6 +410,7 @@ namespace Salary_for_workers
                 using (MySqlCommand command = new MySqlCommand(query, _mCon))
                 {
                     await command.ExecuteNonQueryAsync();
+                    RefreshDataGridView();
                     MessageBox.Show("Данные изменены");
                 }
             }
@@ -514,6 +507,7 @@ namespace Salary_for_workers
                 {
 
                     await command.ExecuteNonQueryAsync();
+                    RefreshDataGridView();
                     MessageBox.Show("Данные добавлены в базу данных");
                 }
             }
@@ -747,6 +741,19 @@ namespace Salary_for_workers
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
             _cancellationTokenSource.Cancel();
+        }
+
+        private async void comboBoxPeoples_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _workers = await TryGetDataAsync(_cancellationTokenSource.Token);
+            GetDayAndNightThisDate(comboBoxPeoples.Text, _datetime);
+        }
+
+        private void RefreshDataGridView()
+        {
+            DataSet dataSet = UpdateDataGridView();
+            dataGridView1.DataSource = dataSet.Tables["Table1"];
+            dataGridView1.Refresh();
         }
     }
 }
