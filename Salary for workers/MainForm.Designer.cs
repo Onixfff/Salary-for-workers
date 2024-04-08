@@ -653,10 +653,13 @@
             // 
             // dataGridViewPeople
             // 
+            this.dataGridViewPeople.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewPeople.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewPeople.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPeople.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPeople.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewPeople.Name = "dataGridViewPeople";
+            this.dataGridViewPeople.ReadOnly = true;
             this.dataGridViewPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewPeople.Size = new System.Drawing.Size(396, 272);
             this.dataGridViewPeople.TabIndex = 0;
@@ -664,10 +667,13 @@
             // 
             // dataGridViewDate
             // 
+            this.dataGridViewDate.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewDate.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridViewDate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewDate.Location = new System.Drawing.Point(405, 3);
             this.dataGridViewDate.Name = "dataGridViewDate";
+            this.dataGridViewDate.ReadOnly = true;
             this.dataGridViewDate.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGridViewDate.Size = new System.Drawing.Size(932, 272);
             this.dataGridViewDate.TabIndex = 1;
@@ -680,6 +686,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);

@@ -55,6 +55,7 @@
             // 
             // comboBoxPeoples
             // 
+            this.comboBoxPeoples.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPeoples.FormattingEnabled = true;
             this.comboBoxPeoples.Location = new System.Drawing.Point(122, 23);
             this.comboBoxPeoples.Name = "comboBoxPeoples";
@@ -168,6 +169,7 @@
             // 
             this.textBoxNightName.Location = new System.Drawing.Point(23, 49);
             this.textBoxNightName.Name = "textBoxNightName";
+            this.textBoxNightName.ReadOnly = true;
             this.textBoxNightName.Size = new System.Drawing.Size(100, 20);
             this.textBoxNightName.TabIndex = 2;
             this.textBoxNightName.Click += new System.EventHandler(this.textBoxNightName_Click);
@@ -190,6 +192,7 @@
             // 
             this.textBoxDayName.Location = new System.Drawing.Point(23, 49);
             this.textBoxDayName.Name = "textBoxDayName";
+            this.textBoxDayName.ReadOnly = true;
             this.textBoxDayName.Size = new System.Drawing.Size(100, 20);
             this.textBoxDayName.TabIndex = 5;
             this.textBoxDayName.Click += new System.EventHandler(this.textBoxDayName_Click);
@@ -226,6 +229,8 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);

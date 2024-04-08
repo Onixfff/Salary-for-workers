@@ -34,6 +34,8 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -51,6 +53,7 @@
             this.ClientSize = new System.Drawing.Size(677, 531);
             this.Controls.Add(this.dataGridView1);
             this.Name = "States";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "States";
             this.Load += new System.EventHandler(this.States_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
