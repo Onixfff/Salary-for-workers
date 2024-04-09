@@ -50,7 +50,7 @@ namespace Salary_for_workers
         {
             int year = date.Year;
             int month = date.Month;
-            DateTime lastDayOfMonth = new DateTime(year, month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            DateTime lastDayOfMonth = new DateTime(year, month, DateTime.DaysInMonth(year, month));
             return lastDayOfMonth;
         }
 
@@ -172,11 +172,11 @@ namespace Salary_for_workers
             {
                 if(maxDay == i)
                 {
-                    query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}'";
+                    query += $"CASE WHEN Date = '{firstDay.Year}-{firstDay.Month}-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS('', 'Д', '-', Day, ' | Н', '-', Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS('', 'Д', '-', Day, ' | Н', '-', '0')\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS('','Д', '-', '0', ' | Н', '-', Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}'\n";
                 }
                 else
                 {
-                    query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}',";
+                    query += $"CASE WHEN Date = '{firstDay.Year}-{firstDay.Month}-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS('', 'Д', '-', Day, ' | Н', '-', Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS('', 'Д', '-', Day, ' | Н', '-', '0')\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS('','Д', '-', '0', ' | Н', '-', Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}', \n";
                 }
             }
 
@@ -252,8 +252,13 @@ namespace Salary_for_workers
             }
 
             DataRow dataRow = dataTable.NewRow();
-            
-            for(int i = 0; i < dateSetMainForms.Count; i++)
+
+            for(int i = 0; i < max; i++)
+            {
+                dataRow[i] = "Д-0 | Н-0";
+            }
+
+            for (int i = 0; i < dateSetMainForms.Count; i++)
             {
                 dataRow[dateSetMainForms[i].TableName] = dateSetMainForms[i].Text;
             }
