@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using MySql.Data.Types;
+using Mysqlx.Crud;
+using Org.BouncyCastle.Math.EC.Multiplier;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +18,7 @@ namespace Salary_for_workers
         private SelectedWorkers selectedWorker;
         private MySqlConnection _mCon;
         private readonly List<Worker> _workers;
+        private List<DateSetMainForm> dateSetMainForms = new List<DateSetMainForm>();
 
         public MainForm(List<Worker> workers, MySqlConnection mCon)
         {
@@ -60,7 +63,7 @@ namespace Salary_for_workers
             MySqlDateTime mySqlDateTimeLast = new MySqlDateTime(lastDay);
             var dateMysqlLast = mySqlDateTimeLast.GetDateTime().Date.ToString("yyyy-MM-dd");
 
-            string query = $"SELECT people.Id, people.Name as Имя, people.Surname as Фамилия, people.Patronymic as Отчество FROM authorization.timework left join people on idPeople = people.id where (date between @firstDay and @lastDay) group by people.id;";
+            string query = $"SELECT people.Id, people.Name as Имя, people.Surname as Фамилия, people.Patronymic as Отчество FROM authorization.timework left join people on idPeople = people.id group by people.id;";
 
             DataSet ds = new DataSet();
 
@@ -143,10 +146,7 @@ namespace Salary_for_workers
 
                         dataGridViewDate.DataSource = ds.Tables[0];
 
-                        int day = ChengeTotal(1);
-                        int night = ChengeTotal(2);
-
-                        labelTotalDayNight.Text = $"Кол-во д - {day} н - {night}";
+                        //labelTotalDayNight.Text = $"Кол-во д - {day} н - {night}";
                     }
                 }
             }
@@ -164,7 +164,22 @@ namespace Salary_for_workers
             MySqlDateTime mySqlDateTimeLast = new MySqlDateTime(lastDay);
             var dateMysqlLast = mySqlDateTimeLast.GetDateTime().Date.ToString("yyyy-MM-dd");
 
-            string query = $"SELECT timework.Date as Дата, timework.Day as День, timework.Night as Ночь FROM authorization.timework left join people on idPeople = people.id where people.Id = @Id and people.Name = @Name and people.Surname = @Surname and people.Patronymic = @Patronymic and (date between @firstDay and @lastDay)";
+            int maxDay = MaxDay();
+            string query = "SELECT ";
+
+            for (int i = 1; i <= maxDay; i++)
+            {
+                if(maxDay == i)
+                {
+                    query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}'";
+                }
+                else
+                {
+                query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}',";
+                }
+            }
+
+            query += "FROM \r\n    timework\r\nleft join states as states_day on states_day.id = timework.IdStateDay\r\nleft join states as states_night on states_night.id = timework.IdStateNight\r\nleft join people on people.id = timework.idPeople\r\nwhere timework.idPeople = @Id and date between @firstDay and @lastDay";
 
             DataSet ds = new DataSet();
 
@@ -177,9 +192,6 @@ namespace Salary_for_workers
                 {
                     command.Parameters.AddWithValue($"@firstDay", dateMysqlFirst);
                     command.Parameters.AddWithValue($"@lastDay", dateMysqlLast);
-                    command.Parameters.AddWithValue($"@Name", selectedWorker.Name);
-                    command.Parameters.AddWithValue($"@Surname", selectedWorker.Surname);
-                    command.Parameters.AddWithValue($"@Patronymic", selectedWorker.Patronymic);
                     command.Parameters.AddWithValue($"@Id", selectedWorker.Id);
 
                     using (MySqlDataAdapter dsAdapter = new MySqlDataAdapter(command))
@@ -187,6 +199,30 @@ namespace Salary_for_workers
                         dsAdapter.Fill(ds);
                     }
                 }
+
+                dateSetMainForms.Clear();
+
+                foreach (DataTable table in ds.Tables)
+                {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        foreach (DataColumn column in table.Columns)
+                        {
+                            if (!row.IsNull(column))
+                            {
+                                // Получаем значение ячейки и имя столбца
+                                string value = row[column].ToString();
+                                string columnName = column.ColumnName;
+
+                                dateSetMainForms.Add(new DateSetMainForm(columnName, value));
+                            }
+                        }
+                    }
+                }
+
+                ds.Clear();
+                ds = UpdateDataGridView();
+
             }
             catch (MySqlException ex)
             {
@@ -225,6 +261,39 @@ namespace Salary_for_workers
 
             return total;
         }
+
+        private DataSet UpdateDataGridView()
+        {
+            DataTable dataTable = new DataTable();
+            DataSet dataSet = new DataSet();
+
+            int max = MaxDay();
+
+            for(int i = 1; i <= max; i++)
+            {
+                dataTable.Columns.Add(i.ToString(), typeof(string));
+            }
+
+            DataRow dataRow = dataTable.NewRow();
+            
+            for(int i = 0; i < dateSetMainForms.Count; i++)
+            {
+                dataRow[dateSetMainForms[i].TableName] = dateSetMainForms[i].Text;
+            }
+
+            dataTable.Rows.Add(dataRow);
+
+            dataSet.Tables.Add(dataTable);
+
+            return dataSet;
+        }
+
+        private int MaxDay()
+        {
+            DateTime lastDay = GetDateTimeLastDay(dateTimePicker1.Value);
+            return lastDay.Day;
+        }
+
 
     }
 }

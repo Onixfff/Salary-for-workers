@@ -667,8 +667,10 @@
             // 
             // dataGridViewDate
             // 
-            this.dataGridViewDate.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewDate.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewDate.AllowUserToAddRows = false;
+            this.dataGridViewDate.AllowUserToDeleteRows = false;
+            this.dataGridViewDate.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridViewDate.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             this.dataGridViewDate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewDate.Location = new System.Drawing.Point(405, 3);
