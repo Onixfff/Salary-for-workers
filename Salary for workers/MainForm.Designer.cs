@@ -653,13 +653,19 @@
             // 
             // dataGridViewPeople
             // 
+            this.dataGridViewPeople.AllowUserToAddRows = false;
+            this.dataGridViewPeople.AllowUserToDeleteRows = false;
+            this.dataGridViewPeople.AllowUserToOrderColumns = true;
             this.dataGridViewPeople.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewPeople.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewPeople.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
             this.dataGridViewPeople.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPeople.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewPeople.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewPeople.MultiSelect = false;
             this.dataGridViewPeople.Name = "dataGridViewPeople";
             this.dataGridViewPeople.ReadOnly = true;
+            this.dataGridViewPeople.RowHeadersVisible = false;
             this.dataGridViewPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewPeople.Size = new System.Drawing.Size(396, 272);
             this.dataGridViewPeople.TabIndex = 0;
@@ -676,6 +682,7 @@
             this.dataGridViewDate.Location = new System.Drawing.Point(405, 3);
             this.dataGridViewDate.Name = "dataGridViewDate";
             this.dataGridViewDate.ReadOnly = true;
+            this.dataGridViewDate.RowHeadersVisible = false;
             this.dataGridViewDate.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGridViewDate.Size = new System.Drawing.Size(932, 272);
             this.dataGridViewDate.TabIndex = 1;
