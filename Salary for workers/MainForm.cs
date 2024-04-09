@@ -19,6 +19,9 @@ namespace Salary_for_workers
         private MySqlConnection _mCon;
         private readonly List<Worker> _workers;
         private List<DateSetMainForm> dateSetMainForms = new List<DateSetMainForm>();
+        
+        private int _dayTotal = 0;
+        private int _nightTotal = 0;
 
         public MainForm(List<Worker> workers, MySqlConnection mCon)
         {
@@ -145,8 +148,6 @@ namespace Salary_for_workers
                         DataSet ds = await GetDayNight(selectedWorker, dateTimePicker1);
 
                         dataGridViewDate.DataSource = ds.Tables[0];
-
-                        //labelTotalDayNight.Text = $"Кол-во д - {day} н - {night}";
                     }
                 }
             }
@@ -175,7 +176,7 @@ namespace Salary_for_workers
                 }
                 else
                 {
-                query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}',";
+                    query += $"CASE WHEN Date = '2024-04-{i}' THEN\r\n\t\tcase\r\n\t\t\tWHEN states_day.abbreviation IS not NULL AND states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day, 'Ночь', states_night.abbreviation, Night)\r\n            when states_day.abbreviation IS not NULL THEN CONCAT_WS(': ', 'День', states_day.abbreviation, Day)\r\n            when states_night.abbreviation IS not NULL THEN CONCAT_WS(': ', 'Ночь', states_night.abbreviation, Night)\r\n\t\tend\r\n        else null\r\n\tEND AS '{i}',";
                 }
             }
 
@@ -219,7 +220,6 @@ namespace Salary_for_workers
                         }
                     }
                 }
-
                 ds.Clear();
                 ds = UpdateDataGridView();
 
@@ -234,32 +234,9 @@ namespace Salary_for_workers
             }
             finally { _mCon.Close(); }
 
+            ChangeTotal(await GetTotal(selectedWorker.Id, dateMysqlFirst, dateMysqlLast));
             return ds;
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="startId"> 1 == Day or 2 == Night</param>
-        private int ChengeTotal(int startId)
-        {
-            int total = 0;
-            int number;
 
-            bool convert;
-
-            for (int i = 0; i < dataGridViewDate.Rows.Count - 1; i++)
-            {
-                var t = dataGridViewDate.Rows[i].Cells[startId];
-                convert = int.TryParse(t.FormattedValue.ToString(), out number);
-                
-                if (convert)
-                {
-                    total += number;
-                }
-            }
-
-            return total;
         }
 
         private DataSet UpdateDataGridView()
@@ -294,6 +271,68 @@ namespace Salary_for_workers
             return lastDay.Day;
         }
 
+        private void ChangeTotal(DataSet ds)
+        {
+            foreach (DataTable table in ds.Tables)
+            {
+                foreach (DataRow row in table.Rows)
+                {
+                    foreach (DataColumn column in table.Columns)
+                    {
+                        if (!row.IsNull(column))
+                        {
+                            // Получаем значение ячейки и имя столбца
+                            string value = row[column].ToString();
+                            string columnName = column.ColumnName;
 
+                            if (columnName == "day")
+                            {
+                                bool convert = Int32.TryParse(value, out _dayTotal);
+
+                            }
+                            else if (columnName == "night")
+                            {
+                                bool convert = Int32.TryParse(value, out _nightTotal);
+                            }
+                        }
+                    }
+                }
+            }
+
+            labelTotalDayNight.Text = $"Кол-во д - {_dayTotal} н - {_nightTotal}";
+        }
+
+        private async Task<DataSet> GetTotal(int idPeople, string firstDay, string lastDay)
+        {
+            string query = "SELECT     sum(day) as 'day',\r\n    sum(night) as 'night'\r\n    FROM authorization.timework \r\nwhere timework.idPeople = @idPeople and date between @firstDay and @lastDay";
+
+            DataSet ds = new DataSet();
+
+            try
+            {
+                ds.Tables.Clear();
+                await _mCon.OpenAsync();
+
+                using (MySqlCommand command = new MySqlCommand(query, _mCon))
+                {
+                    command.Parameters.AddWithValue($"@firstDay", firstDay);
+                    command.Parameters.AddWithValue($"@lastDay", lastDay);
+                    command.Parameters.AddWithValue($"@idPeople", idPeople);
+
+                    using (MySqlDataAdapter dsAdapter = new MySqlDataAdapter(command))
+                    {
+                        dsAdapter.Fill(ds);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            finally { _mCon.Close(); }
+
+            return ds;
+
+        }
     }
 }
