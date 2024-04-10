@@ -186,7 +186,7 @@ namespace Salary_for_workers
         private async Task<List<Worker>> GetWorkersAsync(int idPosition, string login, string password)
         {
             List<Worker> workers = new List<Worker>();
-            string query = "SELECT people.Id, people.Name, people.Surname, people.Patronymic, people.EmploymentDate FROM people JOIN passwords ON people.idPassword = passwords.id JOIN positions ON people.idPositions = positions.id WHERE positions.id = @idPositions;";
+            string query = "SELECT people.Id, people.Name, people.Surname, people.Patronymic, people.EmploymentDate FROM people left join passwords ON people.idPassword = passwords.id left join positions ON people.idPositions = positions.id WHERE positions.id = @idPositions;";
 
             try
             {

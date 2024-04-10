@@ -403,5 +403,13 @@ namespace Salary_for_workers
             return ds;
 
         }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            CreateUser createUser = new CreateUser();
+            this.Visible = false;
+            createUser.ShowDialog();
+            this.Visible = true;
+        }
     }
 }

@@ -76,6 +76,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -88,6 +90,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDate)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -534,6 +537,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.label1, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.panel5, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -708,6 +712,27 @@
             this.panel4.Size = new System.Drawing.Size(739, 95);
             this.panel4.TabIndex = 0;
             // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonAdd.Location = new System.Drawing.Point(84, 0);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(176, 25);
+            this.buttonAdd.TabIndex = 4;
+            this.buttonAdd.Text = "Добавить сотрудника";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.buttonAdd);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 23);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(260, 25);
+            this.panel5.TabIndex = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -734,6 +759,7 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -787,5 +813,7 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label labelTotalDayNight;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button buttonAdd;
     }
 }
