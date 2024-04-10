@@ -28,14 +28,7 @@ namespace Salary_for_workers
             _mCon = mCon;
             _workers = workers;
             InitializeComponent();
-        }
-
-        private async void MainForm_Load(object sender, EventArgs e)
-        {
             dateTimePicker1.CustomFormat = "MM-yyyy";
-            DataSet ds = new DataSet();
-            ds = await GetDataWorkers(dateTimePicker1);
-            dataGridViewPeople.DataSource = ds.Tables[0];
         }
 
         private DateTime GetDateTimeFirstDay(DateTime date)
@@ -410,6 +403,16 @@ namespace Salary_for_workers
             this.Visible = false;
             createUser.ShowDialog();
             this.Visible = true;
+        }
+
+        private async void MainForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                DataSet ds = new DataSet();
+                ds = await GetDataWorkers(dateTimePicker1);
+                dataGridViewPeople.DataSource = ds.Tables[0];
+            }
         }
     }
 }

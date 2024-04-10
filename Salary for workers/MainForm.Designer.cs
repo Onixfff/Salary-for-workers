@@ -67,22 +67,23 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewPeople = new System.Windows.Forms.DataGridView();
             this.dataGridViewDate = new System.Windows.Forms.DataGridView();
-            this.labelTotalDayNight = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.buttonAdd = new System.Windows.Forms.Button();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.labelTotalDayNight = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -90,7 +91,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDate)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -596,6 +596,27 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Отметки о явках и неявках на работу по числам месяца ";
             // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.buttonAdd);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(3, 23);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(260, 25);
+            this.panel5.TabIndex = 5;
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonAdd.Location = new System.Drawing.Point(84, 0);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(176, 25);
+            this.buttonAdd.TabIndex = 4;
+            this.buttonAdd.Text = "Добавить сотрудника";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.panel3);
@@ -667,26 +688,6 @@
             this.dataGridViewDate.Size = new System.Drawing.Size(932, 262);
             this.dataGridViewDate.TabIndex = 1;
             // 
-            // labelTotalDayNight
-            // 
-            this.labelTotalDayNight.AutoSize = true;
-            this.labelTotalDayNight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalDayNight.Location = new System.Drawing.Point(77, 32);
-            this.labelTotalDayNight.Name = "labelTotalDayNight";
-            this.labelTotalDayNight.Size = new System.Drawing.Size(343, 24);
-            this.labelTotalDayNight.TabIndex = 6;
-            this.labelTotalDayNight.Text = "Количество отработанного времени";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(442, 10);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 76);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Д: 0\r\nН: 0\r\nВсего: 0\r\nДней: 0";
-            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 3;
@@ -712,26 +713,25 @@
             this.panel4.Size = new System.Drawing.Size(739, 95);
             this.panel4.TabIndex = 0;
             // 
-            // buttonAdd
+            // labelTotalDayNight
             // 
-            this.buttonAdd.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(84, 0);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(176, 25);
-            this.buttonAdd.TabIndex = 4;
-            this.buttonAdd.Text = "Добавить сотрудника";
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            this.labelTotalDayNight.AutoSize = true;
+            this.labelTotalDayNight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTotalDayNight.Location = new System.Drawing.Point(77, 32);
+            this.labelTotalDayNight.Name = "labelTotalDayNight";
+            this.labelTotalDayNight.Size = new System.Drawing.Size(343, 24);
+            this.labelTotalDayNight.TabIndex = 6;
+            this.labelTotalDayNight.Text = "Количество отработанного времени";
             // 
-            // panel5
+            // label3
             // 
-            this.panel5.Controls.Add(this.buttonAdd);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(3, 23);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(260, 25);
-            this.panel5.TabIndex = 5;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(442, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 76);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Д: 0\r\nН: 0\r\nВсего: 0\r\nДней: 0";
             // 
             // MainForm
             // 
@@ -743,7 +743,7 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -751,6 +751,7 @@
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
@@ -759,7 +760,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
-            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
