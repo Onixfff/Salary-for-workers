@@ -70,10 +70,12 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.labelTotalDayNight = new System.Windows.Forms.Label();
             this.dataGridViewPeople = new System.Windows.Forms.DataGridView();
             this.dataGridViewDate = new System.Windows.Forms.DataGridView();
+            this.labelTotalDayNight = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -82,9 +84,10 @@
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPeople)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDate)).BeginInit();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -595,7 +598,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 154);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1340, 336);
+            this.panel2.Size = new System.Drawing.Size(1340, 375);
             this.panel2.TabIndex = 2;
             // 
             // panel3
@@ -604,7 +607,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1340, 336);
+            this.panel3.Size = new System.Drawing.Size(1340, 375);
             this.panel3.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -612,44 +615,17 @@
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 1, 1);
             this.tableLayoutPanel4.Controls.Add(this.dataGridViewPeople, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.dataGridViewDate, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel5, 1, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1340, 336);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1340, 375);
             this.tableLayoutPanel4.TabIndex = 0;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Controls.Add(this.labelTotalDayNight, 1, 1);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(405, 281);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 3;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(932, 52);
-            this.tableLayoutPanel5.TabIndex = 3;
-            // 
-            // labelTotalDayNight
-            // 
-            this.labelTotalDayNight.AutoSize = true;
-            this.labelTotalDayNight.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalDayNight.Location = new System.Drawing.Point(189, 10);
-            this.labelTotalDayNight.Name = "labelTotalDayNight";
-            this.labelTotalDayNight.Size = new System.Drawing.Size(133, 20);
-            this.labelTotalDayNight.TabIndex = 1;
-            this.labelTotalDayNight.Text = "Кол-во д - 0 н - 0";
             // 
             // dataGridViewPeople
             // 
@@ -667,7 +643,7 @@
             this.dataGridViewPeople.ReadOnly = true;
             this.dataGridViewPeople.RowHeadersVisible = false;
             this.dataGridViewPeople.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewPeople.Size = new System.Drawing.Size(396, 272);
+            this.dataGridViewPeople.Size = new System.Drawing.Size(396, 262);
             this.dataGridViewPeople.TabIndex = 0;
             this.dataGridViewPeople.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPeople_CellClick);
             // 
@@ -684,14 +660,59 @@
             this.dataGridViewDate.ReadOnly = true;
             this.dataGridViewDate.RowHeadersVisible = false;
             this.dataGridViewDate.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            this.dataGridViewDate.Size = new System.Drawing.Size(932, 272);
+            this.dataGridViewDate.Size = new System.Drawing.Size(932, 262);
             this.dataGridViewDate.TabIndex = 1;
+            // 
+            // labelTotalDayNight
+            // 
+            this.labelTotalDayNight.AutoSize = true;
+            this.labelTotalDayNight.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelTotalDayNight.Location = new System.Drawing.Point(77, 32);
+            this.labelTotalDayNight.Name = "labelTotalDayNight";
+            this.labelTotalDayNight.Size = new System.Drawing.Size(343, 24);
+            this.labelTotalDayNight.TabIndex = 6;
+            this.labelTotalDayNight.Text = "Количество отработанного времени";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Tai Le", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(442, 10);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 76);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Д: 0\r\nН: 0\r\nВсего: 0\r\nДней: 0";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tableLayoutPanel5.Controls.Add(this.panel4, 1, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(405, 271);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(932, 101);
+            this.tableLayoutPanel5.TabIndex = 2;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.labelTotalDayNight);
+            this.panel4.Controls.Add(this.label3);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(96, 3);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(739, 95);
+            this.panel4.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1340, 490);
+            this.ClientSize = new System.Drawing.Size(1340, 529);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "MainForm";
@@ -708,10 +729,11 @@
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPeople)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDate)).EndInit();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -759,9 +781,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.Label labelTotalDayNight;
         private System.Windows.Forms.DataGridView dataGridViewPeople;
         private System.Windows.Forms.DataGridView dataGridViewDate;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label labelTotalDayNight;
+        private System.Windows.Forms.Label label3;
     }
 }

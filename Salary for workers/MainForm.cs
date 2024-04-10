@@ -270,7 +270,8 @@ namespace Salary_for_workers
                                 string value = row[column].ToString();
                                 string columnName = column.ColumnName;
 
-                                dateSetMainForms.Add(new DateSetMainForm(columnName, value));
+                                if(value != "Д-0 / Н-0")
+                                    dateSetMainForms.Add(new DateSetMainForm(columnName, value));
                             }
                         }
                     }
@@ -333,6 +334,9 @@ namespace Salary_for_workers
 
         private void ChangeTotal(DataSet ds)
         {
+            _dayTotal = 0;
+            _nightTotal = 0;
+
             foreach (DataTable table in ds.Tables)
             {
                 foreach (DataRow row in table.Rows)
@@ -359,7 +363,12 @@ namespace Salary_for_workers
                 }
             }
 
-            labelTotalDayNight.Text = $"Кол-во д - {_dayTotal} н - {_nightTotal}";
+            labelTotalDayNight.Text = "Количество отработанного времени";
+
+            label3.Text = $"Д: {_dayTotal}" +
+                $"\nН: {_nightTotal}" +
+                $"\nВсего: {_dayTotal + _nightTotal}" +
+                $"\nДней: {dateSetMainForms.Count}";
         }
 
         private async Task<DataSet> GetTotal(int idPeople, string firstDay, string lastDay)
