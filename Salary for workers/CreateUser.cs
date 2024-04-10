@@ -50,7 +50,19 @@ namespace Salary_for_workers
 
         private async void buttonSubmit_Click(object sender, EventArgs e)
         {
-            await InsertUser(_cancellationTokenSource.Token);
+            if(textBoxName.Text.Trim().Length > 0 
+                && textBoxSurname.Text.Trim().Length > 0 
+                && textBoxPatronymic.Text.Trim().Length > 0 && IdDepartment != -1 && IdPosition != -1)
+            {
+                await InsertUser(_cancellationTokenSource.Token);
+            }
+            else
+            {
+                string pole = "Заполните поля";
+                await Console.Out.WriteLineAsync(pole);
+                MessageBox.Show(pole);
+            }
+
         }
 
         private async Task InsertUser(CancellationToken cancellationToken)
