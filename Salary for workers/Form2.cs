@@ -18,10 +18,12 @@ namespace Salary_for_workers
 {
     public partial class Form2 : Form
     {
+        public static SymbolsEnum SymbolsEnumDay;
         public static int IdDay = -1;
         public static string TextDay;
         public static int IdNight = -1;
         public static string TextNight;
+
         
         private MySqlConnection _mCon;
         private List<Worker> _workers;
@@ -529,8 +531,28 @@ namespace Salary_for_workers
 
             if (!isCompliteParseDay && !isCompliteParseNight)
             {
-                MessageBox.Show("Пустые время день/ночь");
-                return;
+                switch (SymbolsEnumDay)
+                {
+                    case SymbolsEnum.Б:
+
+                        break;
+                    case SymbolsEnum.ОТ:
+
+                        break;
+                    case SymbolsEnum.К:
+
+                        break;
+                    case SymbolsEnum.ДО:
+
+                        break;
+                    case SymbolsEnum.НН:
+
+                        break;
+                    default:
+                        MessageBox.Show("Пустые время день/ночь");
+                        return;
+                }
+
             }
 
             foreach (var worker in workers)
