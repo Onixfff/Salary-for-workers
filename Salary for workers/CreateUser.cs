@@ -15,6 +15,8 @@ namespace Salary_for_workers
 {
     public partial class CreateUser : Form
     {
+        private int _lastAddId;
+
         public static int IdPosition = -1;
         public static string TextPosition;
         public static int IdDepartment = -1;
@@ -70,7 +72,42 @@ namespace Salary_for_workers
             string mysqlData = dateTimePickerEmploymentDate.Value.ToString("yyyy-MM-dd");
 
             string query = $"INSERT People(`Name`, `Surname`, `Patronymic`, `EmploymentDate`, `idPositions`, `idDepartment`) " +
-                $"VALUES ('{textBoxName.Text}', '{textBoxSurname.Text}', '{textBoxPatronymic.Text}', '{mysqlData}', '{IdPosition}', '{IdDepartment}' );";
+                $"VALUES ('{textBoxName.Text}', '{textBoxSurname.Text}', '{textBoxPatronymic.Text}', '{mysqlData}', '{IdPosition}', '{IdDepartment}' ); SELECT last_insert_id();";
+
+            try
+            {
+                await _mCon.OpenAsync();
+
+                await Task.Run(async () =>
+                {
+                    using (MySqlCommand command = new MySqlCommand(query, _mCon))
+                    {
+                        using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                _lastAddId = reader.GetInt32(0);
+                            }
+
+                            MessageBox.Show("Данные добавлены в базу данных");
+                            reader.Close();
+                        }
+                    }
+
+                }, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { _mCon.Close(); }
+        }
+
+        private async Task UpdateUser(CancellationToken cancellationToken)
+        {
+            string mysqlData = dateTimePickerEmploymentDate.Value.ToString("yyyy-MM-dd");
+
+            string query = $"Update people set name = {textBoxName.Text}, Surname = {textBoxSurname.Text}, Patronymic = {textBoxPatronymic.Text}, EmploymentDate = {mysqlData}, idPositions = {IdPosition}, idDepartment = {IdDepartment} where id = {_lastAddId};";
 
             try
             {
@@ -81,7 +118,7 @@ namespace Salary_for_workers
                     using (MySqlCommand command = new MySqlCommand(query, _mCon))
                     {
                         await command.ExecuteNonQueryAsync();
-                        MessageBox.Show("Данные добавлены в базу данных");
+                        MessageBox.Show("Данные изменены");
                     }
 
                 }, cancellationToken);
@@ -95,7 +132,12 @@ namespace Salary_for_workers
 
         private void CreateUser_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _cancellationTokenSource.Cancel();
+        }
 
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await UpdateUser(_cancellationTokenSource.Token);
         }
     }
 }
