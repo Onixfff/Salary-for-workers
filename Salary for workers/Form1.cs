@@ -38,13 +38,13 @@ namespace Salary_for_workers
 
                         if (decryptedPassword == textBoxPassword.Text)
                         {
-                            int id = await GetIdPositionsAsync(textBoxLogin.Text, encryptedPassword);
-                            if (id != -1)
+                            int idPosition = await GetIdPositionsAsync(textBoxLogin.Text, encryptedPassword);
+                            if (idPosition != -1)
                             {
-                                List<Worker> workers = await GetWorkersAsync(id, textBoxLogin.Text, encryptedPassword);
+                                List<Worker> workers = await GetWorkersAsync(idPosition, textBoxLogin.Text, encryptedPassword);
                                 if (workers.Count > 0)
                                 {
-                                    MainForm mainForm = new MainForm(workers, mCon);
+                                    MainForm mainForm = new MainForm(workers, mCon, idPosition);
                                     this.Visible = false;
                                     mainForm.ShowDialog();
                                     this.Close();

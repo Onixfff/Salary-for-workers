@@ -15,16 +15,18 @@ namespace Salary_for_workers
 {
     public partial class MainForm : Form
     {
+        private int _userIdPosition;
         private SelectedWorkers selectedWorker;
         private MySqlConnection _mCon;
-        private readonly List<Worker> _workers;
+        private List<Worker> _workers;
         private List<DateSetMainForm> dateSetMainForms = new List<DateSetMainForm>();
         
         private int _dayTotal = 0;
         private int _nightTotal = 0;
 
-        public MainForm(List<Worker> workers, MySqlConnection mCon)
+        public MainForm(List<Worker> workers, MySqlConnection mCon, int userIdPosition)
         {
+            _userIdPosition = userIdPosition;
             _mCon = mCon;
             _workers = workers;
             InitializeComponent();
@@ -412,7 +414,42 @@ namespace Salary_for_workers
                 DataSet ds = new DataSet();
                 ds = await GetDataWorkers(dateTimePicker1);
                 dataGridViewPeople.DataSource = ds.Tables[0];
+                _workers = await GetWorkersAsync(_userIdPosition);
             }
         }
+
+        private async Task<List<Worker>> GetWorkersAsync(int idPosition)
+        {
+            List<Worker> workers = new List<Worker>();
+            string query = "SELECT people.Id, people.Name, people.Surname, people.Patronymic, people.EmploymentDate FROM people left join passwords ON people.idPassword = passwords.id left join positions ON people.idPositions = positions.id WHERE positions.id = @idPositions;";
+
+            try
+            {
+                using (MySqlCommand command = new MySqlCommand(query, _mCon))
+                {
+                    command.Parameters.AddWithValue($"@idPositions", idPosition);
+
+                    await _mCon.OpenAsync();
+
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            Worker worker = new Worker(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4));
+                            workers.Add(worker);
+                        }
+                        reader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { _mCon.Close(); }
+
+            return workers;
+        }
+
     }
 }
