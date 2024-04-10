@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.23, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: authorization
 -- ------------------------------------------------------
--- Server version	8.0.23
+-- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,11 +25,8 @@ DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
-  `idPeople` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `idDepartment>People_idx` (`idPeople`),
-  CONSTRAINT `idDepartment>People` FOREIGN KEY (`idPeople`) REFERENCES `people` (`Id`)
+  UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +36,7 @@ CREATE TABLE `department` (
 
 LOCK TABLES `department` WRITE;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
-INSERT INTO `department` VALUES (1,'rwq',1),(2,'tew',2),(3,'ttew',3);
+INSERT INTO `department` VALUES (1,'Зам начальника отдела продаж'),(2,'Начальник отдела продаж'),(3,'Менеджер   по сбыту продукции');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,14 +79,19 @@ CREATE TABLE `people` (
   `Name` varchar(45) NOT NULL,
   `Surname` varchar(45) NOT NULL,
   `Patronymic` varchar(45) NOT NULL,
-  `EmploymentDate` datetime NOT NULL,
+  `EmploymentDate` date NOT NULL,
   `idPassword` int DEFAULT NULL,
   `idPositions` int NOT NULL,
+  `idDepartment` int NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `id_UNIQUE` (`Id`),
-  KEY `idPasswords_idx` (`idPassword`),
-  CONSTRAINT `idPasswords` FOREIGN KEY (`idPassword`) REFERENCES `passwords` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `idDepartment_idx` (`idDepartment`),
+  KEY `idPosition_idx` (`idPositions`),
+  KEY `IdPassword_idx` (`idPassword`),
+  CONSTRAINT `idDepartment` FOREIGN KEY (`idDepartment`) REFERENCES `department` (`id`),
+  CONSTRAINT `IdPassword` FOREIGN KEY (`idPassword`) REFERENCES `passwords` (`id`),
+  CONSTRAINT `idPosition` FOREIGN KEY (`idPositions`) REFERENCES `positions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +100,7 @@ CREATE TABLE `people` (
 
 LOCK TABLES `people` WRITE;
 /*!40000 ALTER TABLE `people` DISABLE KEYS */;
-INSERT INTO `people` VALUES (1,'Alex','Srr','RE','2021-01-20 01:00:00',1,1),(2,'Юра','Александрович','Александров','2001-01-01 00:00:00',3,2),(3,'Алексей','Бибинов','Эдуардович','2022-02-01 00:00:00',2,1);
+INSERT INTO `people` VALUES (1,'Александр','Десятов','Вениаминович','2018-03-13',1,1,1),(8,'Екатерина','Уральская','Сергеевна','2016-04-06',NULL,1,3),(9,'Анна','Хомина','Владимировна','2016-04-06',NULL,1,3),(10,'321','321','321','2024-04-10',NULL,1,1);
 /*!40000 ALTER TABLE `people` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +116,7 @@ CREATE TABLE `positions` (
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +125,7 @@ CREATE TABLE `positions` (
 
 LOCK TABLES `positions` WRITE;
 /*!40000 ALTER TABLE `positions` DISABLE KEYS */;
-INSERT INTO `positions` VALUES (1,'rq'),(2,'trr'),(3,'ttt');
+INSERT INTO `positions` VALUES (1,'Коммерческий отдел'),(2,'Отдел охраны'),(3,'Отдел ремонта и технического обслуживания оборудования'),(4,'Отдел экономики и финансов'),(5,'Погрузочно-разгрузочный узел'),(6,'Полистирол'),(7,'Производственный отдел газобетон                   '),(8,'Производственный отдел силикатный кирпич                   '),(9,'Производственный отдел сухие смеси'),(10,'Cклад готовой продукции'),(11,'Технологический отдел'),(12,'Транспортный отдел'),(13,'Управление'),(14,'Хозяйственная служба');
 /*!40000 ALTER TABLE `positions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -176,7 +178,7 @@ CREATE TABLE `timework` (
   CONSTRAINT `idPeoples` FOREIGN KEY (`idPeople`) REFERENCES `people` (`Id`),
   CONSTRAINT `IdStateDay` FOREIGN KEY (`IdStateDay`) REFERENCES `states` (`id`),
   CONSTRAINT `IdStateNight` FOREIGN KEY (`IdStateNight`) REFERENCES `states` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -185,7 +187,7 @@ CREATE TABLE `timework` (
 
 LOCK TABLES `timework` WRITE;
 /*!40000 ALTER TABLE `timework` DISABLE KEYS */;
-INSERT INTO `timework` VALUES (1,'2024-03-28',12,13,2,1,2),(2,'2024-03-29',13,14,2,1,2),(3,'2024-04-01',13,13,3,1,2),(4,'2024-04-01',3,5,3,5,16),(7,'2024-04-15',13,NULL,2,1,NULL),(8,'2024-04-15',13,NULL,3,1,NULL),(9,'2024-04-01',4,2,1,13,13),(10,'2024-04-18',31,43,3,8,11),(11,'2024-04-18',31,43,1,8,11),(12,'2024-04-30',43,4,3,15,15),(13,'2024-04-30',42,NULL,1,6,NULL);
+INSERT INTO `timework` VALUES (26,'2024-04-01',12,21,1,5,5);
 /*!40000 ALTER TABLE `timework` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -198,4 +200,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-08 10:50:29
+-- Dump completed on 2024-04-10 16:11:12
