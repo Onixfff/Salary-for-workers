@@ -59,7 +59,7 @@ namespace Salary_for_workers
             MySqlDateTime mySqlDateTimeLast = new MySqlDateTime(lastDay);
             var dateMysqlLast = mySqlDateTimeLast.GetDateTime().Date.ToString("yyyy-MM-dd");
 
-            string query = $"SELECT people.Id, people.Name as Имя, people.Surname as Фамилия, people.Patronymic as Отчество  FROM authorization.timework left join people on idPeople = people.id where people.idPositions = (select idPositions from people where id = @id LIMIT 1) group by people.id";
+            string query = $"SELECT Id, Name as Имя, Surname as Фамилия, Patronymic as Отчество  FROM authorization.people where idPositions = (select idPositions from people where id = @id LIMIT 1) group by id";
 
             DataSet ds = new DataSet();
 
