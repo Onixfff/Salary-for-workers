@@ -107,7 +107,7 @@ namespace Salary_for_workers
         {
             string mysqlData = dateTimePickerEmploymentDate.Value.ToString("yyyy-MM-dd");
 
-            string query = $"Update people set name = {textBoxName.Text}, Surname = {textBoxSurname.Text}, Patronymic = {textBoxPatronymic.Text}, EmploymentDate = {mysqlData}, idPositions = {IdPosition}, idDepartment = {IdDepartment} where id = {_lastAddId};";
+            string query = $"Update people set name = '{textBoxName.Text}', Surname = '{textBoxSurname.Text}', Patronymic = '{textBoxPatronymic.Text}', EmploymentDate = '{mysqlData}', idPositions = '{IdPosition}', idDepartment = '{IdDepartment}' where id = '{_lastAddId}';";
 
             try
             {
