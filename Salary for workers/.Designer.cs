@@ -1,6 +1,6 @@
 ﻿namespace Salary_for_workers
 {
-    partial class Form2
+    partial class EditorDay
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorDay));
             this.comboBoxPeoples = new System.Windows.Forms.ComboBox();
             this.labelDay = new System.Windows.Forms.Label();
             this.labelNight = new System.Windows.Forms.Label();

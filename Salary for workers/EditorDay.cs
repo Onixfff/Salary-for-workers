@@ -16,7 +16,7 @@ using System.Windows.Forms;
 
 namespace Salary_for_workers
 {
-    public partial class Form2 : Form
+    public partial class EditorDay : Form
     { 
         public static int IdDay = -1;
         public static string TextDay;
@@ -30,7 +30,7 @@ namespace Salary_for_workers
         private CancellationTokenSource _cancellationTokenSource;
         private List<SelectedWorkers> selectedWorkers = new List<SelectedWorkers>();
 
-        public Form2(List<Worker> workers, DateTime date, MySqlConnection mCon)
+        public EditorDay(List<Worker> workers, DateTime date, MySqlConnection mCon)
         {
             _mCon = mCon;
             _workers = workers;

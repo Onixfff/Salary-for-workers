@@ -104,7 +104,7 @@ namespace Salary_for_workers
 
             if(day <= lastDayOfMonth)
             {
-                Form2 form2 = new Form2(_workers, new DateTime(year, month, day), _mCon);
+                EditorDay form2 = new EditorDay(_workers, new DateTime(year, month, day), _mCon);
                 this.Visible = false;
                 form2.ShowDialog();
                 this.Visible = true;

@@ -72,13 +72,13 @@ namespace Salary_for_workers
 
             if (isDay)
             {
-                Form2.IdDay = id;
-                Form2.TextDay = atribyt;
+                EditorDay.IdDay = id;
+                EditorDay.TextDay = atribyt;
             }
             else
             {
-                Form2.IdNight = id;
-                Form2.TextNight = atribyt;
+                EditorDay.IdNight = id;
+                EditorDay.TextNight = atribyt;
             }
 
             this.Close();
