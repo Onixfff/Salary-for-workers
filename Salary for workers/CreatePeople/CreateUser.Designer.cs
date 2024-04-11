@@ -91,7 +91,7 @@
             this.textBoxPatronymic.Location = new System.Drawing.Point(181, 92);
             this.textBoxPatronymic.Name = "textBoxPatronymic";
             this.textBoxPatronymic.Size = new System.Drawing.Size(139, 20);
-            this.textBoxPatronymic.TabIndex = 4;
+            this.textBoxPatronymic.TabIndex = 3;
             // 
             // label4
             // 
@@ -108,7 +108,7 @@
             this.textBoxPositions.Name = "textBoxPositions";
             this.textBoxPositions.ReadOnly = true;
             this.textBoxPositions.Size = new System.Drawing.Size(139, 20);
-            this.textBoxPositions.TabIndex = 6;
+            this.textBoxPositions.TabIndex = 5;
             this.textBoxPositions.Click += new System.EventHandler(this.textBoxPositions_Click);
             // 
             // label5
@@ -126,7 +126,7 @@
             this.textBoxDepartment.Name = "textBoxDepartment";
             this.textBoxDepartment.ReadOnly = true;
             this.textBoxDepartment.Size = new System.Drawing.Size(139, 20);
-            this.textBoxDepartment.TabIndex = 8;
+            this.textBoxDepartment.TabIndex = 6;
             this.textBoxDepartment.Click += new System.EventHandler(this.textBoxDepartment_Click);
             // 
             // buttonSubmit
@@ -135,7 +135,7 @@
             this.buttonSubmit.Location = new System.Drawing.Point(181, 205);
             this.buttonSubmit.Name = "buttonSubmit";
             this.buttonSubmit.Size = new System.Drawing.Size(135, 55);
-            this.buttonSubmit.TabIndex = 10;
+            this.buttonSubmit.TabIndex = 8;
             this.buttonSubmit.Text = "Сохранить";
             this.buttonSubmit.UseVisualStyleBackColor = false;
             this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
@@ -154,7 +154,7 @@
             this.dateTimePickerEmploymentDate.Location = new System.Drawing.Point(181, 118);
             this.dateTimePickerEmploymentDate.Name = "dateTimePickerEmploymentDate";
             this.dateTimePickerEmploymentDate.Size = new System.Drawing.Size(139, 20);
-            this.dateTimePickerEmploymentDate.TabIndex = 12;
+            this.dateTimePickerEmploymentDate.TabIndex = 4;
             // 
             // buttonUpdate
             // 
@@ -162,7 +162,7 @@
             this.buttonUpdate.Location = new System.Drawing.Point(181, 205);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(135, 55);
-            this.buttonUpdate.TabIndex = 13;
+            this.buttonUpdate.TabIndex = 7;
             this.buttonUpdate.Text = "Изменить";
             this.buttonUpdate.UseVisualStyleBackColor = false;
             this.buttonUpdate.Visible = false;
@@ -188,6 +188,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxName);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CreateUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление работника";

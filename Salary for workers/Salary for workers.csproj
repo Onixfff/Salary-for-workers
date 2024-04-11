@@ -99,30 +99,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ciphertar\Ciphertar.cs" />
-    <Compile Include="CreateUser.cs">
+    <Compile Include="CreatePeople\CreateUser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreateUser.Designer.cs">
+    <Compile Include="CreatePeople\CreateUser.Designer.cs">
       <DependentUpon>CreateUser.cs</DependentUpon>
     </Compile>
     <Compile Include="DateSetMainForm.cs" />
-    <Compile Include="Department.cs">
+    <Compile Include="CreatePeople\Department.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Department.Designer.cs">
+    <Compile Include="CreatePeople\Department.Designer.cs">
       <DependentUpon>Department.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Autorization.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Autorization.Designer.cs">
+      <DependentUpon>Autorization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form2.cs">
+    <Compile Include="EditorDay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include=".Designer.cs">
+      <DependentUpon>EditorDay.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -131,10 +132,10 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MounthWork.cs" />
-    <Compile Include="Position.cs">
+    <Compile Include="CreatePeople\Position.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Position.Designer.cs">
+    <Compile Include="CreatePeople\Position.Designer.cs">
       <DependentUpon>Position.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -147,22 +148,22 @@
       <DependentUpon>States.cs</DependentUpon>
     </Compile>
     <Compile Include="Worker.cs" />
-    <EmbeddedResource Include="CreateUser.resx">
+    <EmbeddedResource Include="CreatePeople\CreateUser.resx">
       <DependentUpon>CreateUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Department.resx">
+    <EmbeddedResource Include="CreatePeople\Department.resx">
       <DependentUpon>Department.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Autorization.resx">
+      <DependentUpon>Autorization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <EmbeddedResource Include="EditorDay.resx">
+      <DependentUpon>EditorDay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Position.resx">
+    <EmbeddedResource Include="CreatePeople\Position.resx">
       <DependentUpon>Position.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -8,12 +8,12 @@ using System.Windows.Forms;
 
 namespace Salary_for_workers
 {
-    public partial class Form1 : Form
+    public partial class Autorization : Form
     {
         MySqlConnection mCon = new MySqlConnection(ConfigurationManager.ConnectionStrings["local"].ConnectionString);
         Ciphertar ciphertar = new Ciphertar();
 
-        public Form1()
+        public Autorization()
         {
             InitializeComponent();
         }
