@@ -188,7 +188,7 @@
             this.Controls.Add(this.textBoxName);
             this.Name = "CreateUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CreateUser";
+            this.Text = "Добавление работника";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CreateUser_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

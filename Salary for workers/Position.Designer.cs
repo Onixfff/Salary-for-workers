@@ -57,7 +57,7 @@
             this.Controls.Add(this.dataGridView1);
             this.Name = "Position";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Position";
+            this.Text = "Выбор отдела";
             this.Load += new System.EventHandler(this.Position_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
