@@ -82,6 +82,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelTotalDayNight = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -624,6 +625,7 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.comboBox1);
             this.panel5.Controls.Add(this.buttonAdd);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(3, 23);
@@ -637,7 +639,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(166, 0);
+            this.buttonAdd.Location = new System.Drawing.Point(207, 0);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(176, 25);
             this.buttonAdd.TabIndex = 4;
@@ -798,6 +800,16 @@
             this.label3.TabIndex = 2;
             this.label3.Text = "Д: 0\r\nН: 0\r\nВсего: 0\r\nДней: 0";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(6, 3);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(195, 21);
+            this.comboBox1.TabIndex = 5;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -882,5 +894,6 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

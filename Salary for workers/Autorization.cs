@@ -44,7 +44,13 @@ namespace Salary_for_workers
                                 List<Worker> workers = await GetWorkersAsync(idPosition, textBoxLogin.Text, encryptedPassword);
                                 if (workers.Count > 0)
                                 {
-                                    MainForm mainForm = new MainForm(workers, mCon, idPosition);
+                                    MainForm mainForm;
+
+                                    if (textBoxLogin.Text == "" && textBoxPassword.Text == "")
+                                        mainForm = new MainForm(workers, mCon, idPosition);
+                                    else
+                                        mainForm = new MainForm(workers, mCon, idPosition);
+
                                     this.Visible = false;
                                     mainForm.ShowDialog();
                                     this.Close();
@@ -153,7 +159,7 @@ namespace Salary_for_workers
         private async Task<int> GetIdPositionsAsync(string login, string password)
         {
             int id = -1;
-            string query = $"SELECT people.idPositions FROM authorization.department CROSS JOIN people CROSS JOIN passwords WHERE (login = @login AND password = @password) limit 1;";
+            string query = $"SELECT idPositions FROM authorization.people left join positions on positions.id = people.idPositions left join passwords on passwords.id =  people.idPassword WHERE people.idPositions  = (select people.idPositions from people left join passwords on passwords.id = people.idPassword where (login = @login AND password = @password) limit 1) limit 1;";
             try
             {
                 using (MySqlCommand command = new MySqlCommand(query, mCon))

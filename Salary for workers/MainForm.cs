@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Salary_for_workers
 {
@@ -25,13 +26,29 @@ namespace Salary_for_workers
         private int _dayTotal = 0;
         private int _nightTotal = 0;
 
+        private int index;
+        private bool _isCornev = false;
+
         public MainForm(List<Worker> workers, MySqlConnection mCon, int userIdPosition)
         {
             _userIdPosition = userIdPosition;
             _mCon = mCon;
             _workers = workers;
             InitializeComponent();
+            comboBox1.Visible = false;
             dateTimePicker1.CustomFormat = "MM-yyyy";
+        }
+
+        public MainForm(List<Worker> workers, MySqlConnection mCon, int userIdPosition, bool isCornev)
+        {
+
+            _userIdPosition = userIdPosition;
+            _mCon = mCon;
+            _workers = workers;
+            InitializeComponent();
+            comboBox1.Visible = true;
+            dateTimePicker1.CustomFormat = "MM-yyyy";
+            _isCornev = isCornev;
         }
 
         private DateTime GetDateTimeFirstDay(DateTime date)
@@ -50,7 +67,7 @@ namespace Salary_for_workers
             return lastDayOfMonth;
         }
 
-        private async Task<DataSet> GetDataWorkers(DateTimePicker dateTime)
+        private async Task<DataSet> GetDataWorkers(DateTimePicker dateTime, int id)
         {
             DateTime firstDay = GetDateTimeFirstDay(dateTime.Value);
             DateTime lastDay = GetDateTimeLastDay(dateTime.Value);
@@ -61,8 +78,26 @@ namespace Salary_for_workers
 
             MySqlDateTime mySqlDateTimeLast = new MySqlDateTime(lastDay);
             var dateMysqlLast = mySqlDateTimeLast.GetDateTime().Date.ToString("yyyy-MM-dd");
+            
+            string query = null;
 
-            string query = $"SELECT Id, Name as Имя, Surname as Фамилия, Patronymic as Отчество  FROM authorization.people where idPositions = (select idPositions from people where id = @id LIMIT 1) group by id";
+            if (index == 0)
+            {
+                query = $"SELECT Id, Name as Имя, Surname as Фамилия, Patronymic as Отчество  FROM authorization.people";
+            }
+            else
+            {
+                if (_isCornev)
+                {
+                    query = $"SELECT Id, Name as Имя, Surname as Фамилия, Patronymic as Отчество  FROM authorization.people where idPositions = @id group by id";
+                }
+                else
+                {
+                    query = $"SELECT Id, Name as Имя, Surname as Фамилия, Patronymic as Отчество  FROM authorization.people where idPositions = (select idPositions from people where id = @id LIMIT 1) group by id";
+                }
+            }
+
+
 
             DataSet ds = new DataSet();
 
@@ -73,7 +108,7 @@ namespace Salary_for_workers
 
                 using (MySqlCommand command = new MySqlCommand(query, _mCon))
                 {
-                    command.Parameters.AddWithValue($"@id", _workers[0].Id);
+                    command.Parameters.AddWithValue($"@id", id);
 
                     using (MySqlDataAdapter dsAdapter = new MySqlDataAdapter(command))
                     {
@@ -98,7 +133,7 @@ namespace Salary_for_workers
         {
             int year = dateTimePicker1.Value.Year;
             int month = dateTimePicker1.Value.Month;
-            Button text = (Button)sender;
+            System.Windows.Forms.Button text = (System.Windows.Forms.Button)sender;
             int day = Convert.ToInt32(text.Text);
             int lastDayOfMonth = DateTime.DaysInMonth(year, month);
 
@@ -114,8 +149,13 @@ namespace Salary_for_workers
         private async void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             DataSet ds = new DataSet();
-            ds = await GetDataWorkers(dateTimePicker1);
+            
+            if (!_isCornev)
+                ds = await GetDataWorkers(dateTimePicker1, _workers[0].Id);
+            else
+                ds = await GetDataWorkers(dateTimePicker1, index);
             dataGridViewPeople.DataSource = ds.Tables[0];
+
         }
 
         private async void dataGridViewPeople_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -412,9 +452,18 @@ namespace Salary_for_workers
             if (this.Visible)
             {
                 DataSet ds = new DataSet();
-                ds = await GetDataWorkers(dateTimePicker1);
-                dataGridViewPeople.DataSource = ds.Tables[0];
-                _workers = await GetWorkersAsync(_userIdPosition);
+
+                if (!_isCornev)
+                {
+                    ds = await GetDataWorkers(dateTimePicker1, _workers[0].Id);
+                    dataGridViewPeople.DataSource = ds.Tables[0];
+                    _workers = await GetWorkersAsync(_userIdPosition);
+                }
+                else
+                {
+                    await GetPosition();
+                    comboBox1.SelectedItem = comboBox1.Items[0];
+                }
             }
         }
 
@@ -477,6 +526,42 @@ namespace Salary_for_workers
             }
         }
 
+        private async Task GetPosition()
+        {
+            string query = $"SELECT Name FROM authorization.positions";
+
+            try
+            {
+                await _mCon.OpenAsync();
+
+                using (MySqlCommand command = new MySqlCommand(query, _mCon))
+                {
+
+                    using (MySqlDataReader reader = (MySqlDataReader)await command.ExecuteReaderAsync())
+                    {
+                        comboBox1.Items.Add("Все");
+
+                        while (await reader.ReadAsync())
+                        {
+                            comboBox1.Items.Add(reader.GetString(0));
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { _mCon.Close(); }
+
+        }
+
         private void Option_Click(object sender, EventArgs e)
         {
             this.Visible = false;
@@ -487,6 +572,20 @@ namespace Salary_for_workers
             }
             this.Click -= Option_Click;
             this.Visible = true;
+        }
+
+        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            index = comboBox1.Items.IndexOf(comboBox1.SelectedItem);
+
+            DataSet ds = new DataSet();
+
+            if (!_isCornev)
+                ds = await GetDataWorkers(dateTimePicker1, _workers[0].Id);
+            else
+                ds = await GetDataWorkers(dateTimePicker1, index);
+
+            dataGridViewPeople.DataSource = ds.Tables[0];
         }
     }
 }
