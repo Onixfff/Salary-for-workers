@@ -15,6 +15,7 @@ namespace Salary_for_workers
 {
     public partial class MainForm : Form
     {
+        private int _changeIdUser;
         private int _userIdPosition;
         private SelectedWorkers selectedWorker;
         private MySqlConnection _mCon;
@@ -451,5 +452,42 @@ namespace Salary_for_workers
             return workers;
         }
 
+        private void dataGridViewPeople_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int selectedRowIndex = dataGridViewPeople.SelectedRows[0].Index; // Получаем индекс выбранной строки
+                int selectedColumnIndex = 0; // Например, предположим, что нам нужно получить значение в первом столбце
+
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                ToolStripMenuItem item1 = new ToolStripMenuItem("Изменить");
+                contextMenu.Items.Add(item1);
+                contextMenu.Items[0].Click += Option_Click;
+
+                if (selectedRowIndex >= 0 && selectedColumnIndex >= 0)
+                {
+                    DataGridViewCell selectedCell = dataGridViewPeople.Rows[selectedRowIndex].Cells[selectedColumnIndex];
+                    if (selectedCell.Value != null)
+                    {
+                        string cellValue = selectedCell.Value.ToString();
+                        Int32.TryParse(cellValue, out _changeIdUser);
+                        contextMenu.Show(dataGridViewPeople, dataGridViewPeople.PointToClient(Cursor.Position));
+                        // Используйте переменную cellValue, содержащую значение ячейки, для дальнейшей обработки
+                    }
+                }
+            }
+        }
+
+        private void Option_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            if(_changeIdUser != null && _changeIdUser != -1)
+            {
+                CreateUser createUser = new CreateUser(_changeIdUser);
+                createUser.ShowDialog();
+            }
+            this.Click -= Option_Click;
+            this.Visible = true;
+        }
     }
 }

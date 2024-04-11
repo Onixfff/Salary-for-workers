@@ -671,6 +671,7 @@
             this.dataGridViewPeople.Size = new System.Drawing.Size(396, 262);
             this.dataGridViewPeople.TabIndex = 0;
             this.dataGridViewPeople.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPeople_CellClick);
+            this.dataGridViewPeople.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewPeople_CellMouseClick);
             // 
             // dataGridViewDate
             // 
