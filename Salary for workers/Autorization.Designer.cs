@@ -70,6 +70,7 @@
             // 
             // Submit
             // 
+            this.Submit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Submit.Location = new System.Drawing.Point(85, 180);
             this.Submit.Name = "Submit";
             this.Submit.Size = new System.Drawing.Size(75, 23);

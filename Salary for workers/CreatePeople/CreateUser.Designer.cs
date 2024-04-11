@@ -132,12 +132,14 @@
             // buttonSubmit
             // 
             this.buttonSubmit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.buttonSubmit.Location = new System.Drawing.Point(181, 205);
+            this.buttonSubmit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonSubmit.Image = ((System.Drawing.Image)(resources.GetObject("buttonSubmit.Image")));
+            this.buttonSubmit.Location = new System.Drawing.Point(198, 206);
             this.buttonSubmit.Name = "buttonSubmit";
-            this.buttonSubmit.Size = new System.Drawing.Size(135, 55);
+            this.buttonSubmit.Size = new System.Drawing.Size(75, 73);
             this.buttonSubmit.TabIndex = 8;
-            this.buttonSubmit.Text = "Сохранить";
-            this.buttonSubmit.UseVisualStyleBackColor = false;
+            this.buttonSubmit.UseMnemonic = false;
+            this.buttonSubmit.UseVisualStyleBackColor = true;
             this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
             // 
             // label6
@@ -159,12 +161,16 @@
             // buttonUpdate
             // 
             this.buttonUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.buttonUpdate.Location = new System.Drawing.Point(181, 205);
+            this.buttonUpdate.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.buttonUpdate.Image = ((System.Drawing.Image)(resources.GetObject("buttonUpdate.Image")));
+            this.buttonUpdate.Location = new System.Drawing.Point(198, 206);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(135, 55);
+            this.buttonUpdate.Size = new System.Drawing.Size(75, 73);
             this.buttonUpdate.TabIndex = 7;
-            this.buttonUpdate.Text = "Изменить";
-            this.buttonUpdate.UseVisualStyleBackColor = false;
+            this.buttonUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.buttonUpdate.UseMnemonic = false;
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.UseWaitCursor = true;
             this.buttonUpdate.Visible = false;
             this.buttonUpdate.Click += new System.EventHandler(this.button1_Click);
             // 

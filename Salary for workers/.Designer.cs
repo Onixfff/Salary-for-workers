@@ -56,6 +56,7 @@
             // 
             // comboBoxPeoples
             // 
+            this.comboBoxPeoples.Cursor = System.Windows.Forms.Cursors.Hand;
             this.comboBoxPeoples.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPeoples.FormattingEnabled = true;
             this.comboBoxPeoples.Location = new System.Drawing.Point(122, 23);
@@ -111,13 +112,14 @@
             // buttonSubmit
             // 
             this.buttonSubmit.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.buttonSubmit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonSubmit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonSubmit.Location = new System.Drawing.Point(164, 253);
+            this.buttonSubmit.Image = ((System.Drawing.Image)(resources.GetObject("buttonSubmit.Image")));
+            this.buttonSubmit.Location = new System.Drawing.Point(194, 248);
             this.buttonSubmit.Name = "buttonSubmit";
-            this.buttonSubmit.Size = new System.Drawing.Size(121, 47);
+            this.buttonSubmit.Size = new System.Drawing.Size(68, 64);
             this.buttonSubmit.TabIndex = 4;
-            this.buttonSubmit.Text = "Сохранить";
-            this.buttonSubmit.UseVisualStyleBackColor = false;
+            this.buttonSubmit.UseVisualStyleBackColor = true;
             this.buttonSubmit.Click += new System.EventHandler(this.buttonSubmit_Click);
             // 
             // panel1

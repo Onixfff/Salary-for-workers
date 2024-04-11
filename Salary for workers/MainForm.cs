@@ -316,7 +316,6 @@ namespace Salary_for_workers
             }
 
             dataTable.Rows.Add(dataRow);
-
             dataSet.Tables.Add(dataTable);
 
             return dataSet;
