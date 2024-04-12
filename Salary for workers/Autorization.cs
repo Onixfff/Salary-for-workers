@@ -46,8 +46,8 @@ namespace Salary_for_workers
                                 {
                                     MainForm mainForm;
 
-                                    if (textBoxLogin.Text == "" && textBoxPassword.Text == "")
-                                        mainForm = new MainForm(workers, mCon, idPosition);
+                                    if (textBoxLogin.Text == "13" && textBoxPassword.Text == "13")
+                                        mainForm = new MainForm(workers, mCon, idPosition, true);
                                     else
                                         mainForm = new MainForm(workers, mCon, idPosition);
 
